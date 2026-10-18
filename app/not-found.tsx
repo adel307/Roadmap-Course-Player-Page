@@ -84,14 +84,8 @@ export default function NotFoundPage() {
               </div>
             </div>
           </div>
-
         </div>
       </main>
-
-      {/* Simple Footer */}
-      <footer className="border-t border-line bg-card py-6 text-center text-xs text-muted">
-        <p>&copy; {new Date().getFullYear()} Roadmap. All rights reserved.</p>
-      </footer>
     </div>
   );
 }
