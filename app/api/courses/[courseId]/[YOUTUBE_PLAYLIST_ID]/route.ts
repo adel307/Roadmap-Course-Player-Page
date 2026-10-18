@@ -6,11 +6,11 @@ export const revalidate = 3600; // cache لمدة ساعة
 
 export async function GET(
       request: Request,
-      { params }: { params: { courseId: string,YOUTUBE_PLAYLIST_ID: string } }
+      { params }: { params: Promise<{ courseId: string, YOUTUBE_PLAYLIST_ID: string }> }
     ): Promise<NextResponse> {
     try {
 
-        const { courseId , YOUTUBE_PLAYLIST_ID } = await params;
+        const { courseId, YOUTUBE_PLAYLIST_ID } = await params;
         const playlistId = YOUTUBE_PLAYLIST_ID;
 
         if (!playlistId ) {
