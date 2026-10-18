@@ -2,6 +2,7 @@ import { getYouTubeClient } from "./youtube";
 import { parseISODuration } from "./duration";
 import slugify from "slugify";
 import { Lesson } from "./types/lesson";
+import type { youtube_v3 } from "googleapis";
 
 interface GetPlaylistLessonsOptions {
   playlistId: string;
@@ -16,8 +17,8 @@ export async function getPlaylistLessons({
 }: GetPlaylistLessonsOptions): Promise<Lesson[]> {
   const youtube = getYouTubeClient();
 
-  // 1) اجلب كل عناصر البلاي ليست
-  const items: any[] = [];
+  // Fetch all playlist items.
+  const items: youtube_v3.Schema$PlaylistItem[] = [];
   let nextPageToken: string | undefined = undefined;
 
   do {
@@ -34,12 +35,12 @@ export async function getPlaylistLessons({
     nextPageToken = res.data.nextPageToken ?? undefined;
   } while (nextPageToken);
 
-  // 2) اجلب تفاصيل الفيديوهات (المدة) على دفعات
+  // Fetch video details, including duration, in batches.
   const videoIds = items
     .map((i) => i.snippet?.resourceId?.videoId)
     .filter((id): id is string => Boolean(id));
 
-  const videosMap: Record<string, any> = {};
+  const videosMap: Record<string, youtube_v3.Schema$Video> = {};
 
   for (let i = 0; i < videoIds.length; i += 50) {
     const chunk = videoIds.slice(i, i + 50);
@@ -90,7 +91,7 @@ export async function getPlaylistLessons({
       thumbnail:
         item.snippet?.thumbnails?.high?.url ??
         item.snippet?.thumbnails?.default?.url ??
-        null,
+        "null",
       body: null,
       durationSeconds,
       order,
@@ -104,4 +105,3 @@ export async function getPlaylistLessons({
 
   return lessons;
 }
-

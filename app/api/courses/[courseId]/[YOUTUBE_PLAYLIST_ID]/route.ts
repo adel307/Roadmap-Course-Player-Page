@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getPlaylistLessons } from "@/lib/getPlaylistLessons";
 import type { PlaylistApiResponse } from "@/lib/types/lesson";
 
-export const revalidate = 3600; // cache لمدة ساعة
+export const revalidate = 3600; // Cache for one hour.
 
 export async function GET(
       request: Request,
@@ -15,13 +15,13 @@ export async function GET(
 
         if (!playlistId ) {
             return NextResponse.json(
-                { error: `متغيرات البيئة ناقصة playlistId ${playlistId}` },
+                { error: `Missing playlistId: ${playlistId}` },
                 { status: 500 }
             );
         }
         if (!courseId) {
             return NextResponse.json(
-                { error: `متغيرات البيئة ناقصة courseId ${courseId}` },
+                { error: `Missing courseId: ${courseId}` },
                 { status: 500 }
             );
         }
@@ -37,10 +37,10 @@ export async function GET(
 
         return res;
     } catch (err) {
-        const message = err instanceof Error ? err.message : "خطأ غير معروف";
+        const message = err instanceof Error ? err.message : "Unknown error";
         console.error(err);
         return NextResponse.json(
-            { error: "فشل جلب البلاي ليست", details: message },
+            { error: "Failed to fetch playlist", details: message },
             { status: 500 }
         );
   }

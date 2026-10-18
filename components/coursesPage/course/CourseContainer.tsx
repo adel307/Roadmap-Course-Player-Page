@@ -23,7 +23,7 @@ export default function CourseDetailPageContent({ allCourses, courseID }: Props)
 
 
     return (
-        <main className="min-h-screen bg-[#f7f9fb] text-ink">
+        <main className="min-h-screen bg-page text-ink">
         {/* ---------- Hero ---------- */}
         <CourseHero course={course} level={course.level} />
 
@@ -40,7 +40,7 @@ export default function CourseDetailPageContent({ allCourses, courseID }: Props)
                     videoUrl={course.promo_video_url}
                 />
                 ) : (
-                <div className="relative flex aspect-video items-center justify-center overflow-hidden rounded-2xl border border-line bg-gradient-to-br from-brand-dark to-[#1b2a3f] shadow-card">
+                <div className="relative flex aspect-video items-center justify-center overflow-hidden rounded-2xl border border-line bg-gradient-to-br from-brand-dark to-navy shadow-card">
                     <span className="rounded-full border border-white/20 bg-black/40 px-4 py-1.5 text-xs font-medium text-white backdrop-blur-md">
                     No preview video yet
                     </span>
@@ -57,8 +57,8 @@ export default function CourseDetailPageContent({ allCourses, courseID }: Props)
                 {course.requirements.length > 0 && (
                     <section className="space-y-4 transition-all duration-300 ease-out hover:-translate-y-2">
                         {/* Main card — matches CourseSidebar pricing card */}
-                        <div className="rounded-2xl border border-line bg-[#061f43] p-6 shadow-card sm:p-7">
-                            <h2 className="text-sm font-bold text-[#58cfac]">Requirements</h2>
+                        <div className="rounded-2xl border border-line bg-navy-deep p-6 shadow-card sm:p-7">
+                        <h2 className="text-sm font-bold text-heading-on-dark">Requirements</h2>
 
                             <ul className="mt-4 space-y-3.5 text-sm">
                                 {course.requirements.map((req: string) => (
@@ -66,7 +66,7 @@ export default function CourseDetailPageContent({ allCourses, courseID }: Props)
                                     key={req}
                                     className="flex items-start gap-3 leading-6 text-white"
                                 >
-                                    <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#58cfac]" />
+                                    <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
                                     <span>{req}</span>
                                 </li>
                                 ))}

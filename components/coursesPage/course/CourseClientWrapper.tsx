@@ -6,6 +6,7 @@ import { useCourseStore } from "@/lib/store/useCourseStore";
 import { fetchLessons } from "@/lib/api/fetchLessons";
 import { getPlaylistId } from "@/lib/getPlaylistId";
 import { Course } from "@/lib/types/course";
+import Link from "next/link";
 
 interface CourseClientWrapperProps {
   course: Course;
@@ -38,7 +39,7 @@ export function CourseClientWrapper({ course }: CourseClientWrapperProps) {
 
   const totalPages = Math.ceil(courseLessons.length / ITEMS_PER_PAGE);
 
-  // اقتطاع 5 دروس بناءً على الصفحة الحالية
+  // Show five lessons per page.
   const visibleLessons = courseLessons.slice(
     currentPage * ITEMS_PER_PAGE,
     (currentPage + 1) * ITEMS_PER_PAGE
@@ -58,8 +59,8 @@ export function CourseClientWrapper({ course }: CourseClientWrapperProps) {
 
   if (isLoading) {
     return (
-      <div className="py-12 text-center text-sm text-slate-500">
-        جاري تحميل الدروس...
+      <div className="py-12 text-center text-sm text-muted">
+        Loading lessons...
       </div>
     );
   }
@@ -67,15 +68,15 @@ export function CourseClientWrapper({ course }: CourseClientWrapperProps) {
   if (error) {
     return (
       <div className="py-12 text-center text-sm text-red-500">
-        حدث خطأ أثناء تحميل الدروس: {error}
+        Unable to load lessons: {error}
       </div>
     );
   }
 
   if (courseLessons.length === 0) {
     return (
-      <div className="py-12 text-center text-sm text-slate-500">
-        لا توجد دروس متاحة حالياً.
+      <div className="py-12 text-center text-sm text-muted">
+        No lessons are available yet.
       </div>
     );
   }
@@ -86,10 +87,10 @@ export function CourseClientWrapper({ course }: CourseClientWrapperProps) {
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.17em] text-brand-dark">
-            محتوى الدورة
+            Course content
           </p>
           <h2 className="mt-2 text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-            دروس الكورس ({courseLessons.length})
+            Course lessons ({courseLessons.length})
           </h2>
         </div>
 
@@ -98,19 +99,19 @@ export function CourseClientWrapper({ course }: CourseClientWrapperProps) {
           <div className="flex items-center gap-2">
             <button
               type="button"
-              aria-label="الدروس السابقة"
+              aria-label="Previous lessons"
               disabled={currentPage === 0}
               onClick={handlePrev}
               className="flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-white text-slate-600 transition hover:border-brand/35 hover:text-brand-dark disabled:opacity-40 disabled:hover:border-line disabled:hover:text-slate-600"
             >
               <ArrowRight size={18} />
             </button>
-            <span className="px-2 text-xs font-semibold text-slate-500">
+            <span className="px-2 text-xs font-semibold text-muted">
               {currentPage + 1} / {totalPages}
             </span>
             <button
               type="button"
-              aria-label="الدروس التالية"
+              aria-label="Next lessons"
               disabled={currentPage >= totalPages - 1}
               onClick={handleNext}
               className="flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-white text-slate-600 transition hover:border-brand/35 hover:text-brand-dark disabled:opacity-40 disabled:hover:border-line disabled:hover:text-slate-600"
@@ -124,9 +125,12 @@ export function CourseClientWrapper({ course }: CourseClientWrapperProps) {
       {/* Lessons List (Cards matching Testimonials style) */}
       <div className="grid gap-4 sm:grid-cols-1">
         {visibleLessons.map((lesson) => (
-          <div
+          <Link
             key={lesson.id}
-            className="group flex flex-col justify-between rounded-2xl border border-line bg-white p-5 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#061f43] hover:bg-[#061f43] sm:flex-row sm:items-center"
+            href={`/courses/${course.id}/${lesson.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex flex-col justify-between rounded-2xl border border-line bg-card p-5 shadow-card transition-all duration-300 ease-out hover:-translate-y-1 hover:border-brand/40 hover:bg-brand sm:flex-row sm:items-center"
             style={{
               boxShadow:
                 "0 1px 2px rgba(15,23,42,0.06), 0 8px 20px -6px rgba(15,23,42,0.12)",
@@ -141,7 +145,7 @@ export function CourseClientWrapper({ course }: CourseClientWrapperProps) {
                   {lesson.order}. {lesson.title}
                 </h3>
                 {lesson.description && (
-                  <p className="mt-1 line-clamp-2 text-sm text-slate-600 transition-colors duration-300 group-hover:text-white/80">
+                  <p className="mt-1 line-clamp-2 text-sm text-muted transition-colors duration-300 group-hover:text-white/80">
                     {lesson.description}
                   </p>
                 )}
@@ -149,11 +153,11 @@ export function CourseClientWrapper({ course }: CourseClientWrapperProps) {
             </div>
 
             {lesson.durationSeconds && (
-              <div className="mt-3 text-xs font-medium text-slate-500 transition-colors duration-300 group-hover:text-white/70 sm:mt-0 sm:shrink-0">
+              <div className="mt-3 text-xs font-medium text-muted transition-colors duration-300 group-hover:text-white/70 sm:mt-0 sm:shrink-0">
                 {lesson.durationSeconds}
               </div>
             )}
-          </div>
+        </Link>
         ))}
       </div>
 
@@ -162,19 +166,19 @@ export function CourseClientWrapper({ course }: CourseClientWrapperProps) {
         <div className="mt-6 flex items-center justify-center gap-3 sm:hidden">
           <button
             type="button"
-            aria-label="الدروس السابقة"
+            aria-label="Previous lessons"
             disabled={currentPage === 0}
             onClick={handlePrev}
             className="flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-white text-slate-600 transition active:scale-95 disabled:opacity-40"
           >
             <ArrowRight size={17} />
           </button>
-          <span className="text-xs font-semibold text-slate-500">
-            {currentPage + 1} من {totalPages}
+          <span className="text-xs font-semibold text-muted">
+            {currentPage + 1} of {totalPages}
           </span>
           <button
             type="button"
-            aria-label="الدروس التالية"
+            aria-label="Next lessons"
             disabled={currentPage >= totalPages - 1}
             onClick={handleNext}
             className="flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-white text-slate-600 transition active:scale-95 disabled:opacity-40"

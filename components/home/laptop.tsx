@@ -2,10 +2,10 @@
 
 import { Canvas, useFrame } from '@react-three/fiber';
 import { RoundedBox, Text, useTexture, Environment } from '@react-three/drei';
-import { useRef, useState, Suspense } from 'react';
+import { useMemo, useRef, useState, Suspense, useEffect } from 'react';
 import * as THREE from 'three';
 
-// ===== الأنواع =====
+// ===== Types =====
 
 interface LaptopProps {
   screenImage?: string;
@@ -28,7 +28,7 @@ interface LaptopScreenProps {
   screenImage: string;
 }
 
-// ===== المكونات الفرعية =====
+// ===== Child components =====
 
 function KeyboardKey({ position }: KeyboardKeyProps) {
   return (
@@ -60,7 +60,7 @@ function Keyboard() {
 function LaptopBase({ hovered }: LaptopBaseProps) {
   return (
     <group position={[0, 0, 0]}>
-      {/* الهيكل الرئيسي */}
+      {/* Main chassis */}
       <RoundedBox args={[3, 0.15, 2]} radius={0.06} smoothness={4}>
         <meshStandardMaterial
           color={hovered ? '#e8eefc' : '#d4dae6'}
@@ -69,7 +69,7 @@ function LaptopBase({ hovered }: LaptopBaseProps) {
         />
       </RoundedBox>
 
-      {/* لوحة المفاتيح */}
+      {/* Keyboard */}
       <mesh position={[0, 0.085, -0.15]}>
         <boxGeometry args={[2.6, 0.01, 1.3]} />
         <meshStandardMaterial color="#1e1e1e" roughness={0.9} />
@@ -77,7 +77,7 @@ function LaptopBase({ hovered }: LaptopBaseProps) {
 
       <Keyboard />
 
-      {/* تراك باد */}
+      {/* Trackpad */}
       <mesh position={[0, 0.088, 0.65]}>
         <boxGeometry args={[0.9, 0.005, 0.55]} />
         <meshStandardMaterial color="#0a0a0a" roughness={0.4} metalness={0.3} />
@@ -87,12 +87,18 @@ function LaptopBase({ hovered }: LaptopBaseProps) {
 }
 
 function LaptopScreen({ screenRef, screenImage }: LaptopScreenProps) {
-  const texture = useTexture(screenImage);
-  texture.colorSpace = THREE.SRGBColorSpace;
+  const loadedTexture = useTexture(screenImage);
+  const texture = useMemo(() => {
+    const screenTexture = loadedTexture.clone();
+    screenTexture.colorSpace = THREE.SRGBColorSpace;
+    return screenTexture;
+  }, [loadedTexture]);
+
+  useEffect(() => () => texture.dispose(), [texture]);
 
   return (
     <group position={[0, 0.075, -1]} ref={screenRef}>
-      {/* الجزء الخلفي */}
+      {/* Rear panel */}
       <RoundedBox
         args={[3, 2, 0.1]}
         radius={0.06}
@@ -106,19 +112,19 @@ function LaptopScreen({ screenRef, screenImage }: LaptopScreenProps) {
         />
       </RoundedBox>
 
-      {/* إطار الشاشة الأسود */}
+      {/* Screen bezel */}
       <mesh position={[0, 1, 0.051]}>
         <planeGeometry args={[2.85, 1.9]} />
         <meshBasicMaterial color="#0a0a0a" />
       </mesh>
 
-      {/* الصورة على الشاشة */}
+      {/* Screen image */}
       <mesh position={[0, 1, 0.052]}>
         <planeGeometry args={[2.7, 1.75]} />
         <meshBasicMaterial map={texture} toneMapped={false} />
       </mesh>
 
-      {/* الكاميرا */}
+      {/* Camera */}
       <mesh position={[0, 1.94, 0.052]}>
         <circleGeometry args={[0.025, 16]} />
         <meshStandardMaterial color="#111" />
@@ -127,16 +133,16 @@ function LaptopScreen({ screenRef, screenImage }: LaptopScreenProps) {
   );
 }
 
-// ===== المكون الرئيسي للابتوب =====
+// ===== Main laptop component =====
 
-function Laptop({ screenImage = '/images/PNG.png' }: LaptopProps) {
+function Laptop({ screenImage = 'https://res.cloudinary.com/dlndowzi/image/upload/v1792356697/PNG.jpg' }: LaptopProps) {
   const groupRef = useRef<THREE.Group>(null);
   const screenRef = useRef<THREE.Group>(null);
   const floatRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState<boolean>(false);
   const [opened, setOpened] = useState<boolean>(true);
 
-  useFrame((state, delta) => {
+  useFrame((state) => {
     const t = state.clock.getElapsedTime();
 
     if (floatRef.current) {
@@ -158,7 +164,7 @@ function Laptop({ screenImage = '/images/PNG.png' }: LaptopProps) {
       );
     }
 
-    // فتح/إغلاق الشاشة
+    // Animate the screen opening and closing.
     if (screenRef.current) {
       const targetRotation = opened ? 0 : Math.PI / 2;
       screenRef.current.rotation.x = THREE.MathUtils.lerp(
@@ -171,7 +177,7 @@ function Laptop({ screenImage = '/images/PNG.png' }: LaptopProps) {
 
   return (
     <group ref={floatRef} scale={1.05}>
-    {/* shift خفيف للتحت بدل -0.4 */}
+    {/* Slightly lower the laptop in its frame. */}
     <group position={[0, -0.15, 0]}>
         <group
         ref={groupRef}
@@ -187,7 +193,7 @@ function Laptop({ screenImage = '/images/PNG.png' }: LaptopProps) {
   );
 }
 
-// ===== مكوّن التحميل =====
+// ===== Loading indicator =====
 
 function Loader({ message = 'Loading...' }: LoaderProps) {
   return (
@@ -197,7 +203,7 @@ function Loader({ message = 'Loading...' }: LoaderProps) {
   );
 }
 
-// ===== التطبيق الرئيسي =====
+// ===== Main scene =====
 
 export default function LaptopApp() {
   return (
@@ -211,7 +217,7 @@ export default function LaptopApp() {
         dpr={[1, 2]}
         style={{ background: 'transparent' }}
       >
-        {/* الإضاءة المحسّنة */}
+        {/* Soft studio lighting */}
         <ambientLight intensity={0.9} />
         <directionalLight
           position={[5, 6, 5]}

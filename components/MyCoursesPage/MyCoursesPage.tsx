@@ -18,8 +18,8 @@ type CoursesPageProps = {
 };
 
 export const metadata: Metadata = {
-  title: "All courses | Roadmap",
-  description: "Explore expert-led courses and build practical skills.",
+  title: "My courses | Roadmap",
+  description: "Explore the courses you have added to your learning list.",
 };
 
 function formatDuration(seconds: number): string {
@@ -57,17 +57,17 @@ function formatLevel(level: Course["level"]): string {
 export function MyCoursesPage({ myCourses }: CoursesPageProps) {
 
   return (
-    <main className="min-h-screen bg-[#f7f9fb] text-ink">
-      <section className="border-b border-line bg-white">
+    <main className="min-h-screen bg-page text-ink">
+      <section className="border-b border-line bg-card">
         <div className="mx-auto max-w-7xl px-5 pb-10 pt-8 sm:px-8 sm:pb-14 sm:pt-10">
           <nav aria-label="Breadcrumb" className="text-xs font-medium text-muted">
             <Link href="/" className="transition hover:text-brand-dark">
               Home
             </Link>
             <span aria-hidden="true" className="mx-2 text-slate-300">
-              /
+              {">"}
             </span>
-            <span className="text-ink">Courses</span>
+            <span className="text-ink">My Courses</span>
           </nav>
 
           <div className="mt-8 flex flex-col justify-between gap-6 sm:mt-10 sm:flex-row sm:items-end">
@@ -85,7 +85,7 @@ export function MyCoursesPage({ myCourses }: CoursesPageProps) {
               </p>
             </div>
 
-            <div className="flex w-fit items-center gap-3 rounded-2xl border border-line bg-[#f7f9fb] px-4 py-3">
+            <div className="flex w-fit items-center gap-3 rounded-2xl border border-line bg-surface px-4 py-3">
               <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-pale text-brand-dark">
                 <BookOpen size={19} />
               </span>
@@ -110,7 +110,7 @@ export function MyCoursesPage({ myCourses }: CoursesPageProps) {
               Find a course that fits your goals and your schedule.
             </p>
           </div>
-          <span className="rounded-full border border-line bg-white px-3 py-1.5 text-xs font-semibold text-muted">
+          <span className="rounded-full border border-line bg-card px-3 py-1.5 text-xs font-semibold text-muted">
             {myCourses.length} {myCourses.length === 1 ? "course" : "courses"}
           </span>
         </div>
@@ -124,9 +124,9 @@ export function MyCoursesPage({ myCourses }: CoursesPageProps) {
                   href={`/courses/${course.id}`}
                   key={course.id}
                   aria-label={`View ${course.title}`}
-                  className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-card transition duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-[0_14px_34px_rgba(27,42,63,0.1)]"
+                  className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-card shadow-card transition duration-300 hover:-translate-y-1 hover:border-brand/40 hover:shadow-[0_14px_34px_rgba(27,42,63,0.1)]"
                 >
-                  {/* ---------- صورة الكورس أو البديل ---------- */}
+                  {/* Course thumbnail or fallback */}
                   <div className="relative h-44 w-full overflow-hidden bg-slate-100">
                     {course.thumbnail_url ? (
                       <Image
@@ -155,7 +155,7 @@ export function MyCoursesPage({ myCourses }: CoursesPageProps) {
                   <div className="flex flex-1 flex-col p-5 sm:p-6">
                     <div className="flex items-center justify-between gap-3">
                       <span className="truncate text-xs font-bold text-brand-dark">
-                        Learn programming with IT Legend
+                        Learn programming with Roadmap
                       </span>
                       {Number(course.price) <= 0 && (
                         <span className="shrink-0 rounded-full bg-brand-pale px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.08em] text-brand-dark">
@@ -215,7 +215,7 @@ export function MyCoursesPage({ myCourses }: CoursesPageProps) {
             })}
           </div>
         ) : (
-          <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
+          <div className="rounded-2xl border border-dashed border-line bg-card px-6 py-16 text-center">
             <BookOpen className="mx-auto text-brand-dark" size={28} />
             <h3 className="mt-4 text-lg font-bold text-ink">
               No courses found

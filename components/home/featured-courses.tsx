@@ -8,7 +8,7 @@ import {
 import { featuredCourses } from "@/data/courses";
 
 function formatDuration(seconds: number): string {
-  if (!seconds || seconds <= 0) return "غير محدد";
+  if (!seconds || seconds <= 0) return "Not specified";
   const hours = Math.floor(seconds / 3600);
   const days = Math.floor(hours / 24);
   const weeks = Math.floor(days / 7);
@@ -20,7 +20,11 @@ function formatDuration(seconds: number): string {
 
 export function FeaturedCourses() {
   return (
-    <section id="courses" className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-24">
+    <section
+      id="courses"
+      className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-24"
+    >
+      {/* Header */}
       <div className="mb-9 flex flex-col justify-between gap-5 sm:mb-11 sm:flex-row sm:items-end">
         <div className="max-w-2xl">
           <p className="text-xs font-bold uppercase tracking-[0.17em] text-brand-dark">
@@ -34,24 +38,24 @@ export function FeaturedCourses() {
             technology.
           </p>
         </div>
-        <span className="inline-flex w-fit items-center gap-2 rounded-full border border-brand/15 bg-brand-pale px-3.5 py-2 text-xs font-semibold text-brand-dark">
+        <span className="inline-flex w-fit items-center gap-2 rounded-full border border-brand/20 bg-brand-pale px-3.5 py-2 text-xs font-semibold text-brand-dark">
           <span className="h-1.5 w-1.5 rounded-full bg-brand" />
           Explore featured programs
         </span>
       </div>
 
+      {/* Cards grid */}
       <div className="grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3 xl:grid-cols-4">
         {featuredCourses.map((course) => {
-
           return (
             <Link
               key={course.id}
               href={`/courses/${course.id}`}
               aria-label={`Open ${course.title} course`}
-              className="group overflow-hidden rounded-2xl border border-line bg-white shadow-card transition duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-[0_14px_34px_rgba(27,42,63,0.1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+              className="group overflow-hidden rounded-2xl border border-line bg-card shadow-card transition duration-300 hover:-translate-y-1 hover:border-brand/40 hover:shadow-[0_14px_34px_rgba(27,42,63,0.1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
             >
               {/* Course thumbnail / fallback */}
-              <div className="relative aspect-video w-full overflow-hidden bg-brand-pale">
+              <div className="relative aspect-video w-full overflow-hidden bg-surface">
                 {course.thumbnail_url ? (
                   <img
                     src={course.thumbnail_url}
@@ -60,10 +64,10 @@ export function FeaturedCourses() {
                     className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                   />
                 ) : (
-                  <div className="relative flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-pale via-white to-brand-pale">
+                  <div className="relative flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-pale via-card to-brand-pale dark:from-surface dark:via-card dark:to-surface">
                     {/* subtle grid pattern */}
                     <div
-                      className="absolute inset-0 opacity-[0.35]"
+                      className="absolute inset-0 opacity-[0.35] dark:opacity-20"
                       style={{
                         backgroundImage:
                           "radial-gradient(circle at 1px 1px, rgba(27,42,63,0.12) 1px, transparent 0)",
@@ -71,7 +75,7 @@ export function FeaturedCourses() {
                       }}
                     />
                     <div className="relative flex flex-col items-center gap-2 text-brand-dark">
-                      <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-brand/20 bg-white shadow-sm">
+                    <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-brand/20 bg-card shadow-sm">
                         <BookOpen size={22} strokeWidth={1.8} />
                       </span>
                       <span className="text-[10px] font-bold uppercase tracking-[0.14em]">
@@ -87,10 +91,11 @@ export function FeaturedCourses() {
                 </span>
               </div>
 
+              {/* Card body */}
               <div className="p-3 sm:p-5">
                 <div className="flex items-center justify-between gap-3">
                   <span className="text-[9px] font-bold uppercase tracking-[0.1em] text-brand-dark sm:text-[10px]">
-                    Learn programming with IT legend
+                    Learn programming with Roadmap
                   </span>
                 </div>
                 <h3 className="mt-3 min-h-12 text-sm font-bold leading-5 text-ink sm:text-base sm:leading-6">
@@ -98,7 +103,11 @@ export function FeaturedCourses() {
                 </h3>
                 <div className="mt-4 flex flex-wrap items-center gap-2 text-[11px] sm:gap-3 sm:text-xs">
                   <span className="inline-flex items-center gap-1 font-bold text-ink">
-                    <Star size={14} fill="currentColor" className="text-[#ffc107]" />
+                    <Star
+                      size={14}
+                      fill="currentColor"
+                      className="text-[#ffc107]"
+                    />
                     {course.average_rating.toFixed(1)}
                   </span>
                   <span className="h-3 w-px bg-line" />
@@ -111,7 +120,7 @@ export function FeaturedCourses() {
                   <span className="text-xs text-muted">
                     {formatDuration(course.total_duration_seconds)}
                   </span>
-                  <span className="inline-flex items-center gap-1 rounded-lg border border-brand/25 bg-white px-2 py-1.5 text-[10px] font-bold text-brand-dark transition group-hover:bg-brand-pale sm:gap-1.5 sm:px-3 sm:py-2 sm:text-xs">
+                  <span className="inline-flex items-center gap-1 rounded-lg border border-brand/25 bg-card px-2 py-1.5 text-[10px] font-bold text-brand-dark transition group-hover:bg-brand-pale sm:gap-1.5 sm:px-3 sm:py-2 sm:text-xs">
                     Course details
                     <ArrowRight size={14} />
                   </span>
@@ -121,7 +130,7 @@ export function FeaturedCourses() {
           );
         })}
       </div>
-      <p className="mt-4 text-xs text-slate-400">
+      <p className="mt-4 text-xs text-muted">
         Course ratings and enrolment figures are illustrative examples.
       </p>
     </section>

@@ -91,18 +91,18 @@ export function CourseSidebar({ course }: CourseSidebarProps) {
       if (course.inMyCard) {
         updateCourse(course.id, { inMyCard: false });
         
-        alert("تم إزالة الكورس من السلة بنجاح");
+        alert("Course removed from your courses.");
         
         router.push(`/courses`);
       } else {
         updateCourse(course.id, { inMyCard: true });
         
-        alert("تم إضافة الكورس إلى السلة بنجاح");
+        alert("Course added to your courses.");
         
         router.push("/my-courses");
       }
     } catch (error) {
-      alert("حدث خطأ ما، يرجى المحاولة مرة أخرى.");
+      alert("Something went wrong. Please try again.");
       console.error(error);
     }
   };
@@ -110,9 +110,9 @@ export function CourseSidebar({ course }: CourseSidebarProps) {
   return (
     <aside className="space-y-4 lg:sticky lg:top-24 lg:col-span-4">
       {/* Pricing card */}
-      <div className="rounded-2xl border border-line bg-[#061f43] p-6 shadow-card transition-all duration-300 ease-out hover:-translate-y-2">
+      <div className="rounded-2xl border border-line bg-navy-deep p-6 text-white shadow-card transition-all duration-300 ease-out hover:-translate-y-1">
         <div className="flex items-baseline gap-3">
-          <span className="text-3xl font-extrabold text-[#58cfac]">
+          <span className="text-3xl font-extrabold text-heading-on-dark">
             {isFree ? "Free" : formatMoney(currentPrice)}
           </span>
           {hasDiscount && (
@@ -137,7 +137,7 @@ export function CourseSidebar({ course }: CourseSidebarProps) {
         </button>
 
         <div className="mt-6 border-t border-line pt-5">
-          <h3 className="text-sm font-bold text-[#58cfac]">This course includes</h3>
+          <h3 className="text-sm font-bold text-heading-on-dark">This course includes</h3>
           <ul className="mt-4 space-y-3.5 text-sm">
             {includes.map(({ icon: Icon, label, value }) => (
               <li
@@ -145,10 +145,10 @@ export function CourseSidebar({ course }: CourseSidebarProps) {
                 className="flex items-center justify-between gap-3"
               >
                 <span className="flex items-center gap-2 text-white">
-                  <Icon size={16} className="text-slate-400" />
+                  <Icon size={16} className="text-muted-on-dark" />
                   {label}
                 </span>
-                <span className="font-semibold text-[#58cfac]">{value}</span>
+                <span className="font-semibold text-heading-on-dark">{value}</span>
               </li>
             ))}
           </ul>
@@ -158,7 +158,7 @@ export function CourseSidebar({ course }: CourseSidebarProps) {
       {/* Certificate note */}
       <div className="rounded-2xl border border-brand/20 bg-brand-pale p-5 text-center">
         <Award className="mx-auto text-brand-dark" size={22} />
-        <p className="mt-2 text-xs font-medium leading-6 text-[#58cfac]">
+        <p className="mt-2 text-xs font-medium leading-6 text-brand-dark">
           Complete all lessons to earn your verified course certificate.
         </p>
       </div>

@@ -59,8 +59,8 @@ export default function LessonDetailClient({ params }: PageProps) {
     
     if (isLoading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-[#f7f9fb]">
-                <p className="text-muted">جاري تحميل بيانات الدرس والكورس...</p>
+            <div className="flex min-h-screen items-center justify-center bg-page">
+                <p className="text-muted">Loading lesson and course details...</p>
             </div>
         );
     }

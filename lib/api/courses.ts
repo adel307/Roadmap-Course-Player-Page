@@ -20,7 +20,7 @@ export const createCourse = (
 ): Course[] => {
   const newCourse: Course = {
     ...newCourseData,
-    id: crypto.randomUUID(), // توليد ID فريد
+    id: crypto.randomUUID(), // Generate a unique ID.
     created_at: new Date(),
     updated_at: new Date(),
   };

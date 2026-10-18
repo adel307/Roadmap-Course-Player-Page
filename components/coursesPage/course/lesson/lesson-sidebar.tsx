@@ -16,7 +16,7 @@ export function LessonSidebar({ course, lessons, currentLessonId }: Props) {
     <aside className="space-y-4 lg:sticky lg:top-24">
       <div className="overflow-hidden rounded-2xl border border-line bg-white shadow-card">
         {/* Course header */}
-        <div className="bg-gradient-to-br from-brand-dark to-[#1b2a3f] p-5">
+        <div className="bg-gradient-to-br from-brand-dark to-navy p-5">
           <p className="text-[11px] font-medium uppercase tracking-wider text-white/60">
             Course
           </p>

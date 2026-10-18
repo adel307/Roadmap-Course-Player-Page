@@ -8,7 +8,7 @@ export function formatDuration(seconds: number): string {
   return `${secs}s`;
 }
 
-/** يحوّل أي رابط يوتيوب (watch, youtu.be, embed, shorts) لصيغة embed */
+/** Convert a YouTube watch, short, or embed URL to an embed URL. */
 export function getYouTubeEmbedUrl(url: string): string | null {
   try {
     const urlObj = new URL(url);
@@ -26,7 +26,7 @@ export function getYouTubeEmbedUrl(url: string): string | null {
       videoId = urlObj.pathname.slice(1);
     }
 
-    // إزالة أي query params إضافية
+    // Strip any additional query parameters.
     videoId = videoId.split("?")[0].split("&")[0];
 
     return videoId ? `https://www.youtube.com/embed/${videoId}` : null;

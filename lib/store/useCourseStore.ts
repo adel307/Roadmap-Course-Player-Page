@@ -9,6 +9,8 @@ interface CourseState {
   setCourses: (courses: Course[]) => void;
   updateCourse: (courseId: string | number, updatedData: Partial<Course>) => void;
   lessonsByCourse: Record<string, Lesson[]>;
+  savedLessonIds: string[];
+  toggleSavedLesson: (lessonId: string) => void;
   loadingCourses: Record<string, boolean>;
   errors: Record<string, string | null>;
   fetchLessonsForCourse: (
@@ -39,6 +41,14 @@ export const useCourseStore = create<CourseState>()(
       },
 
       lessonsByCourse: {},
+      savedLessonIds: [],
+      toggleSavedLesson: (lessonId) => {
+        set((state) => ({
+          savedLessonIds: state.savedLessonIds.includes(lessonId)
+            ? state.savedLessonIds.filter((savedId) => savedId !== lessonId)
+            : [...state.savedLessonIds, lessonId],
+        }));
+      },
       loadingCourses: {},
       errors: {},
 
@@ -98,10 +108,11 @@ export const useCourseStore = create<CourseState>()(
       },
     }),
     {
-      name: 'course-storage', // اسم المفتاح في localStorage
+      name: 'course-storage', // Storage key in localStorage.
       partialize: (state) => ({
         courses: state.courses,
         lessonsByCourse: state.lessonsByCourse,
+        savedLessonIds: state.savedLessonIds,
       }),
     }
   )

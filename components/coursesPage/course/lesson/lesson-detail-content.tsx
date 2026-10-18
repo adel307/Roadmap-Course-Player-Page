@@ -3,14 +3,16 @@ import { LessonHeader } from "@/components/coursesPage/course/lesson/lesson-head
 import { LessonSidebar } from "@/components/coursesPage/course/lesson/lesson-sidebar";
 import { LessonNavigation } from "@/components/coursesPage/course/lesson/lesson-navigation";
 import { RelatedCourses } from "@/components/coursesPage/course/related-courses";
+import type { Course } from "@/lib/types/course";
+import type { Lesson } from "@/lib/types/lesson";
 
 type LessonDetailContentProps = {
-  course: any;
-  lesson: any;
-  courseLessons: any[];
-  prev: any;
-  next: any;
-  related: any[];
+  course: Course;
+  lesson: Lesson | null;
+  courseLessons: Lesson[];
+  prev: Lesson | null;
+  next: Lesson | null;
+  related: Course[];
 };
 
 export default function LessonDetailContent({
@@ -22,7 +24,7 @@ export default function LessonDetailContent({
   related,
 }: LessonDetailContentProps) {
   return (
-    <main className="min-h-screen bg-[#f7f9fb] text-ink">
+    <main className="min-h-screen bg-page text-ink">
       {/* ---------- Header ---------- */}
       {lesson && <LessonHeader course={course} lesson={lesson} />}
 
@@ -66,7 +68,7 @@ export default function LessonDetailContent({
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-muted">جاري جلب تفاصيل الدرس...</p>
+            <p className="text-muted">Loading lesson details...</p>
           </div>
         )}
 

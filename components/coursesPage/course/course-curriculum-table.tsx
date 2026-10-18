@@ -33,7 +33,7 @@ export function CourseCurriculumTable({
     lessons,
     totalDurationSeconds,
 }: CourseCurriculumTableProps) {
-  // رتّب الدروس حسب order
+  // Keep lessons in curriculum order.
   const sortedLessons = [...lessons].sort((a, b) => a.order - b.order);
 
   const totalLessons = sortedLessons.length;
@@ -48,7 +48,7 @@ export function CourseCurriculumTable({
     return (
       <div className="rounded-2xl border border-line bg-white p-6 shadow-card sm:p-7">
         <h2 className="text-lg font-bold text-ink">Course content</h2>
-        <div className="mt-5 flex flex-col items-center justify-center rounded-xl border border-dashed border-line bg-[#f7f9fb] px-6 py-10 text-center">
+        <div className="mt-5 flex flex-col items-center justify-center rounded-xl border border-dashed border-line bg-page px-6 py-10 text-center">
           <PlayCircle size={22} className="text-slate-400" />
           <p className="mt-3 text-sm font-semibold text-ink">
             Lessons coming soon
@@ -82,7 +82,7 @@ export function CourseCurriculumTable({
         {sortedLessons.map((lesson, index) => (
           <li
             key={lesson.id}
-            className="flex items-center justify-between gap-3 bg-white px-4 py-3.5 text-sm transition hover:bg-[#f7f9fb]"
+            className="flex items-center justify-between gap-3 bg-card px-4 py-3.5 text-sm transition hover:bg-surface"
           >
             <Link
                 href={`/courses/${courseID}/${lesson.id}`}

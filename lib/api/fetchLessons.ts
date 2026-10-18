@@ -38,10 +38,10 @@ export async function fetchLessons(courseId: string, playlistId: string): Promis
                 message: error.message,
                 stack: error.stack,
             });
-            throw new Error(`فشل جلب الدروس: ${error.message}`);
+            throw new Error(`Failed to fetch lessons: ${error.message}`);
         } else {
             console.error("Unknown Error occurred:", error);
-            throw new Error("حدث خطأ غير معروف أثناء جلب الدروس.");
+            throw new Error("An unknown error occurred while fetching lessons.");
         }
     }
 }

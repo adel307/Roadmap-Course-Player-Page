@@ -32,7 +32,7 @@ function getVimeoId(url: URL): string | null {
 function resolveVideoSource(rawUrl: string | null | undefined): VideoSource | null {
   if (!rawUrl) return null;
 
-  // مسار محلي مثل /videos/intro.mp4
+  // Local paths such as /videos/intro.mp4 are used directly.
   if (rawUrl.startsWith("/")) return { kind: "file", src: rawUrl };
 
   let url: URL;
@@ -84,7 +84,7 @@ export function CoursePromoPlayer({ title, thumbnailUrl, videoUrl }: Props) {
   
 
   return (
-    <div className="relative aspect-video overflow-hidden rounded-2xl border border-line bg-[#1b2a3f] shadow-card">
+    <div className="relative aspect-video overflow-hidden rounded-2xl border border-line bg-navy shadow-card">
       {playing && source ? (
         source.kind === "file" ? (
           <video
@@ -119,7 +119,7 @@ export function CoursePromoPlayer({ title, thumbnailUrl, videoUrl }: Props) {
               className="object-cover opacity-90"
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-dark to-[#1b2a3f]" />
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-dark to-navy" />
           )}
 
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />

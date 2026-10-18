@@ -20,7 +20,7 @@ export function Testimonials() {
   });
 
   return (
-    <section id="testimonials" className="border-y border-line bg-[#eff5f6] py-14 sm:py-20 lg:py-24">
+    <section id="testimonials" className="border-y border-line py-14 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8 flex flex-col gap-6 sm:mb-11 sm:flex-row sm:items-end sm:justify-between">
@@ -46,7 +46,7 @@ export function Testimonials() {
               type="button"
               aria-label="Previous testimonials"
               onClick={() => move(-1)}
-              className="flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-white text-slate-600 transition hover:border-brand/35 hover:text-brand-dark"
+              className="flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-card text-muted transition hover:border-brand/35 hover:text-brand-dark"
             >
               <ArrowLeft size={18} />
             </button>
@@ -54,7 +54,7 @@ export function Testimonials() {
               type="button"
               aria-label="Next testimonials"
               onClick={() => move(1)}
-              className="flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-white text-slate-600 transition hover:border-brand/35 hover:text-brand-dark"
+              className="flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-card text-muted transition hover:border-brand/35 hover:text-brand-dark"
             >
               <ArrowRight size={18} />
             </button>
@@ -68,7 +68,7 @@ export function Testimonials() {
               key={testimonial.id}
               className={`group flex min-h-[248px] flex-col rounded-2xl border border-line bg-white p-5 sm:p-6
                 transition-all duration-300 ease-out
-                hover:-translate-y-2 hover:border-[#061f43] hover:bg-[#061f43]
+                hover:-translate-y-1 hover:border-brand/40 hover:bg-brand
                 ${index === 2 ? "sm:col-span-2 lg:col-span-1" : ""}
               `}
               style={{
@@ -98,7 +98,7 @@ export function Testimonials() {
               <div className="mt-5 flex items-center gap-3 border-t border-line pt-4 transition-colors duration-300 group-hover:border-white/20">
                 <span
                   aria-hidden="true"
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold text-ink"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold text-ink dark:text-black"
                   style={{ backgroundColor: testimonial.avatarColor }}
                 >
                   {testimonial.initials}
@@ -125,7 +125,7 @@ export function Testimonials() {
             type="button"
             aria-label="Previous testimonials"
             onClick={() => move(-1)}
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-white text-slate-600 active:scale-95 transition"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-card text-muted transition active:scale-95"
           >
             <ArrowLeft size={17} />
           </button>
@@ -147,7 +147,7 @@ export function Testimonials() {
             type="button"
             aria-label="Next testimonials"
             onClick={() => move(1)}
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-white text-slate-600 active:scale-95 transition"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-card text-muted transition active:scale-95"
           >
             <ArrowRight size={17} />
           </button>

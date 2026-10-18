@@ -23,7 +23,7 @@ export function RelatedCourses({
             href={`/courses/${item.id}`}
             className={`group flex min-h-[248px] flex-col rounded-2xl border border-line bg-white p-5 sm:p-6
               transition-all duration-300 ease-out
-              hover:-translate-y-2 hover:border-[#061f43] hover:bg-[#061f43]
+              hover:-translate-y-1 hover:border-brand/40 hover:bg-brand
               ${index === 2 ? "sm:col-span-2 lg:col-span-1" : ""}
             `}
             style={{

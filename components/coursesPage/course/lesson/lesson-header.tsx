@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { Bookmark, BookmarkCheck } from "lucide-react";
 import type { Lesson } from "@/lib/types/lesson";
 import type { Course } from "@/lib/types/course";
 import { formatDuration } from "@/lib/utils/lesson-utils";
+import { useCourseStore } from "@/lib/store/useCourseStore";
 
 type Props = {
   course: Course;
@@ -9,6 +11,10 @@ type Props = {
 };
 
 export function LessonHeader({ course, lesson }: Props) {
+  const savedLessonIds = useCourseStore((state) => state.savedLessonIds);
+  const toggleSavedLesson = useCourseStore((state) => state.toggleSavedLesson);
+  const isSaved = savedLessonIds.includes(lesson.id);
+
   return (
     <header className="border-b border-line bg-white">
       <div className="mx-auto max-w-7xl px-5 py-6 sm:px-8 sm:py-8">
@@ -17,14 +23,14 @@ export function LessonHeader({ course, lesson }: Props) {
           <Link href="/courses" className="transition hover:text-brand">
             Courses
           </Link>
-          <span>/</span>
+          <span>{">"}</span>
           <Link
             href={`/courses/${course.slug}`}
             className="transition hover:text-brand"
           >
             {course.title}
           </Link>
-          <span>/</span>
+          <span>{">"}</span>
           <span className="truncate text-ink">{lesson.title}</span>
         </nav>
 
@@ -73,22 +79,16 @@ export function LessonHeader({ course, lesson }: Props) {
           {/* Save button */}
           <button
             type="button"
-            className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-line bg-white px-4 py-2.5 text-sm font-medium text-ink transition hover:bg-surface"
+            aria-pressed={isSaved}
+            onClick={() => toggleSavedLesson(lesson.id)}
+            className={`inline-flex shrink-0 items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 ${
+              isSaved
+                ? "border-brand/30 bg-brand-pale text-brand-dark"
+                : "border-line bg-white text-ink hover:bg-surface"
+            }`}
           >
-            <svg
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
-              />
-            </svg>
-            Save
+            {isSaved ? <BookmarkCheck size={17} /> : <Bookmark size={17} />}
+            {isSaved ? "Saved" : "Save lesson"}
           </button>
         </div>
       </div>
