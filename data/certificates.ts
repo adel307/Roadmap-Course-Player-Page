@@ -1,0 +1,117 @@
+import { Certificate, StudentTestimonial } from "@/lib/types/certificate";
+
+export const Certificates: Certificate[] = [
+    {
+        id: "e4a1c2b3-8d9e-4f5a-b6c7-d8e9f0a1b2c3",
+        certificate_code: "CERT-2026-89412",
+        user_id: "c7b8a901-2d3e-4f5a-6b7c-8d9e0f1a2b3c",
+        course_id: "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+        issued_at: "2026-05-15T14:30:00Z",
+        pdf_url: "https://storage.googleapis.com/certificates/CERT-2026-89412.pdf",
+        student_name_on_cert: "Adel Ahmed",
+        course_title_on_cert: "Full-Stack Development",
+        instructor_name_on_cert: "Roadmap Team",
+        status: "active",
+        expiration_date: null,
+    },
+    {
+        id: "f5b2d3c4-9e0f-5a6b-7c8d-9e0f1a2b3c4d",
+        certificate_code: "CERT-2026-55109",
+        user_id: "c7b8a901-2d3e-4f5a-6b7c-8d9e0f1a2b3c",
+        course_id: "f2e3d4c5-b6a7-8901-2345-6789abcdef01",
+        issued_at: "2026-08-10T11:00:00Z",
+        pdf_url: "https://storage.googleapis.com/certificates/CERT-2026-55109.pdf",
+        student_name_on_cert: "Adel Ahmed",
+        course_title_on_cert: "Mobile App Development",
+        instructor_name_on_cert: "Roadmap Team",
+        status: "active",
+        expiration_date: null,
+    },
+    {
+        id: "f5b2d3c4-9e0f-5a6b-7c8d-9e0f1a2b3c4d",
+        certificate_code: "CERT-2026-55109",
+        user_id: "c7b8a901-2d3e-4f5a-6b7c-8d9e0f1a2b3c",
+        course_id: "f2e3d4c5-b6a7-8901-2345-6789abcdef01",
+        issued_at: "2026-08-10T11:00:00Z",
+        pdf_url: "https://storage.googleapis.com/certificates/CERT-2026-55109.pdf",
+        student_name_on_cert: "Adel Ahmed",
+        course_title_on_cert: "Mobile App Development",
+        instructor_name_on_cert: "Roadmap Team",
+        status: "active",
+        expiration_date: null,
+    },
+    {
+        id: "f5b2d3c4-9e0f-5a6b-7c8d-9e0f1a2b3c4d",
+        certificate_code: "CERT-2026-55109",
+        user_id: "c7b8a901-2d3e-4f5a-6b7c-8d9e0f1a2b3c",
+        course_id: "f2e3d4c5-b6a7-8901-2345-6789abcdef01",
+        issued_at: "2026-08-10T11:00:00Z",
+        pdf_url: "https://storage.googleapis.com/certificates/CERT-2026-55109.pdf",
+        student_name_on_cert: "Adel Ahmed",
+        course_title_on_cert: "Mobile App Development",
+        instructor_name_on_cert: "Roadmap Team",
+        status: "active",
+        expiration_date: null,
+    },
+    {
+        id: "f5b2d3c4-9e0f-5a6b-7c8d-9e0f1a2b3c4d",
+        certificate_code: "CERT-2026-55109",
+        user_id: "c7b8a901-2d3e-4f5a-6b7c-8d9e0f1a2b3c",
+        course_id: "f2e3d4c5-b6a7-8901-2345-6789abcdef01",
+        issued_at: "2026-08-10T11:00:00Z",
+        pdf_url: "https://storage.googleapis.com/certificates/CERT-2026-55109.pdf",
+        student_name_on_cert: "Adel Ahmed",
+        course_title_on_cert: "Mobile App Development",
+        instructor_name_on_cert: "Roadmap Team",
+        status: "active",
+        expiration_date: null,
+    },
+];
+
+export const studentTestimonials: StudentTestimonial[] = [
+    {
+        id: "1",
+        name: "أحمد المحمود",
+        role: "مطور واجهات أجهزة مطور حديثاً",
+        quote: "تغيرت مسيرتي المهنية بالكامل بعد إتمام مسار React. الشرح العملي والمشاريع الحقيقية ساعدتني في الحصول على أولي فرصة عمل خلال ٣ أشهر.",
+        learningPath: "مسار تطوير الواجهات الأمامية (Frontend)",
+        initials: "أ م",
+        avatarColor: "#E0F2FE", // أزرق فاتح
+    },
+    {
+        id: "2",
+        name: "سارة الغامدي",
+        role: "مهندسة برمجيات في شركة ناشئة",
+        quote: "التركيز على التطبيق العملي والممارسات البرمجية السليمة وليس فقط الشرح النظرى كان السبب في بناء محفظة أعمال قوية أذهلت المقابلين.",
+        learningPath: "مسار Full-Stack JavaScript",
+        initials: "س غ",
+        avatarColor: "#FCE7F3", // وردي فاتح
+    },
+    {
+        id: "3",
+        name: "عمر خالد",
+        role: "مطور تطبيقات هواتف",
+        quote: "طريقة تقديم المفاهيم المعقدة مثل إدارة الحالات (State Management) والـ APIs تم التعبير عنها بأسلوب ممتع ومبسط جداً.",
+        learningPath: "مسار React Native التطبيقي",
+        initials: "ع خ",
+        avatarColor: "#FEF3C7", // أصفر فاتح
+    },
+    {
+        id: "4",
+        name: "مريم حسن",
+        role: "مصممة واجهات وتجربة المستخدم (UI/UX)",
+        quote: "فهم أساسيات البرمجة ساعدني كثيراً في التواصل بشكل أفضل مع فريق التطوير وبناء تصميمات قابلة للتنفيذ بمرونة.",
+        learningPath: "أساسيات تطوير الويب للمصممين",
+        initials: "م ح",
+        avatarColor: "#DCFCE7", // أخضر فاتح
+    },
+    {
+        id: "5",
+        name: "يوسف العتيبي",
+        role: "مطور خوادم وبنية تحتية",
+        quote: "المسار التعليمي كان متكاملاً ومنظماً بشكل رائع. تعلمت كيفية بناء خدمات سحابية متكاملة بآمان وكفاءة عالية.",
+        learningPath: "مسار Node.js & Backend Architecture",
+        initials: "ي ع",
+        avatarColor: "#F3E8FF", // بنفسجي فاتح
+    },
+];
