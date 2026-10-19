@@ -23,7 +23,7 @@ export default function CourseDetailPageContent({ allCourses, courseID }: Props)
 
     
     return (
-        <main className="min-h-screen bg-page text-ink">
+        <main className="min-h-screen bg-page/55 text-ink dark:bg-page">
         {/* ---------- Hero ---------- */}
         <CourseHero course={course} level={course.level} />
 

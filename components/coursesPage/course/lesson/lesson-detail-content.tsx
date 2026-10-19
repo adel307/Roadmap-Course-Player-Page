@@ -16,7 +16,7 @@ export default function LessonDetailContent({
 }: LessonDetailContentProps) {
     if (!lesson) {
         return (
-            <main className="min-h-screen bg-page text-ink">
+            <main className="min-h-screen bg-page/55 text-ink dark:bg-page">
                 <div className="mx-auto max-w-7xl px-5 py-12 text-center sm:px-8">
                     <p className="text-muted">Loading lesson details...</p>
                 </div>
@@ -30,7 +30,7 @@ export default function LessonDetailContent({
     const currentNumber = currentIndex >= 0 ? currentIndex + 1 : lesson.order;
 
     return (
-        <main className="min-h-screen bg-page text-ink">
+        <main className="min-h-screen bg-page/55 text-ink dark:bg-page">
             {/* ---------- Header ---------- */}
             <LessonHeader course={course} lesson={lesson} />
 

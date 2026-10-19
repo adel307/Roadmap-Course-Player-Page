@@ -64,7 +64,7 @@ export default function LessonDetailClient({ params }: PageProps) {
     
     if (isLoading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-page">
+            <div className="flex min-h-screen items-center justify-center bg-page/55 dark:bg-page">
                 <p className="text-muted">Loading lesson and course details...</p>
             </div>
         );

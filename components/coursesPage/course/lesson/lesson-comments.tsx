@@ -53,14 +53,17 @@ export function LessonComments({ course, lesson, comments }: Props){
                                     
                                     {/* Comment Text Card */}
                                     <div className="
-                                        bg-[#1B2A3F] text-white
+                                        border border-line bg-card text-ink
                                         p-4 rounded-xl rounded-tl-none
-                                        shadow-lg shadow-black/20
+                                        shadow-sm
                                         transition-all duration-[350ms] ease-[cubic-bezier(0.22,1,0.36,1)]
                                         hover:-translate-y-1
-                                        hover:shadow-xl hover:shadow-black/30
+                                        hover:shadow-md
                                         motion-reduce:transition-none
                                         motion-reduce:hover:translate-y-0
+                                        dark:border-white/10 dark:bg-[#1B2A3F] dark:text-white
+                                        dark:shadow-lg dark:shadow-black/20
+                                        dark:hover:shadow-xl dark:hover:shadow-black/30
                                     ">
                                         <p className="text-sm leading-relaxed break-words">
                                             {c.comment}

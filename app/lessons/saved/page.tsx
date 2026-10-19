@@ -49,7 +49,7 @@ export default function SavedLessonsPage() {
   });
 
   return (
-    <main className="min-h-screen bg-page text-ink">
+    <main className="min-h-screen bg-page/55 text-ink dark:bg-page">
       <section className="border-b border-line bg-card">
         <div className="mx-auto max-w-7xl px-5 pb-10 pt-8 sm:px-8 sm:pb-14 sm:pt-10">
           <nav aria-label="Breadcrumb" className="text-xs font-medium text-muted">

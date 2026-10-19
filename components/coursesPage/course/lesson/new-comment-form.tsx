@@ -68,16 +68,16 @@ export function CommentForm({ course, lesson }: Props) {
                         Current User
                     </span>
                 </div>
-                
+
                 <div className="
-                    bg-[#1B2A3F]
+                    bg-card dark:bg-[#1B2A3F]
                     p-2 rounded-xl rounded-tl-none
-                    shadow-lg shadow-black/25
+                    shadow-card dark:shadow-lg dark:shadow-black/25
                     transition-all duration-[350ms] ease-[cubic-bezier(0.22,1,0.36,1)]
                     flex flex-col sm:flex-row gap-2 sm:gap-3
-                    border border-white/10
-                    focus-within:border-[#2bae8e]
-                    focus-within:shadow-[0_0_12px_rgba(43,174,142,0.3)]
+                    border border-line dark:border-white/10
+                    focus-within:border-brand
+                    focus-within:shadow-[0_0_12px_rgba(43,174,142,0.2)]
                 ">
                     <textarea
                         value={newCommentText}
@@ -89,12 +89,13 @@ export function CommentForm({ course, lesson }: Props) {
                         className="
                             flex-1
                             resize-none
-                            bg-transparent
+                            rounded-lg border border-line bg-white
                             px-2 py-2
-                            text-sm text-white
+                            text-sm text-ink
                             placeholder:text-muted/70
                             leading-relaxed
-                            focus:outline-none
+                            focus:border-brand focus:outline-none
+                            dark:border-white/10 dark:bg-[#16223a] dark:text-white
                         "
                         required
                     />
@@ -108,7 +109,6 @@ export function CommentForm({ course, lesson }: Props) {
                             bg-primary
                             px-4 py-2
                             text-sm font-semibold
-                            text-white
                             transition-all duration-300
                             disabled:opacity-50
                             disabled:cursor-not-allowed

@@ -48,7 +48,7 @@ export function CourseCurriculumTable({
     return (
       <div className="rounded-2xl border border-line bg-white p-6 shadow-card sm:p-7">
         <h2 className="text-lg font-bold text-ink">Course content</h2>
-        <div className="mt-5 flex flex-col items-center justify-center rounded-xl border border-dashed border-line bg-page px-6 py-10 text-center">
+        <div className="mt-5 flex flex-col items-center justify-center rounded-xl border border-dashed border-line bg-card px-6 py-10 text-center">
           <PlayCircle size={22} className="text-slate-400" />
           <p className="mt-3 text-sm font-semibold text-ink">
             Lessons coming soon

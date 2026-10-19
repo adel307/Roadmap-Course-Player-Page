@@ -25,7 +25,7 @@ export default function RootLayout({
         <div className="relative flex min-h-screen flex-col">
           <Providers>
             <ThemeBackground />
-            <div className="pointer-events-none fixed inset-0 z-0 bg-page/95" />
+            <div className="pointer-events-none fixed inset-0 z-0 bg-page/40 dark:bg-page/95" />
             <div className="relative z-10 flex min-h-screen flex-col">
               <Header />
               <div className="flex-grow">{children}</div>

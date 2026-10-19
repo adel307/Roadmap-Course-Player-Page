@@ -8,7 +8,7 @@ import {
 
 export default function NotFoundPage() {
   return (
-    <div className="flex min-h-screen flex-col justify-between bg-page font-sans text-ink antialiased">
+    <div className="flex min-h-screen flex-col justify-between bg-page/55 font-sans text-ink antialiased dark:bg-page">
       {/* Main 404 Error Content */}
       <main className="mx-auto max-w-[1280px] px-5 py-12 sm:px-8 sm:py-16 flex-1 flex items-center">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full">

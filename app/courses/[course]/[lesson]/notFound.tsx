@@ -36,7 +36,7 @@ export default function NotFound({ lessonID }: NotFoundProps) {
   };
 
   return (
-    <main className="min-h-screen bg-page font-sans text-ink antialiased">
+    <main className="min-h-screen bg-page/55 font-sans text-ink antialiased dark:bg-page">
       <div className="mx-auto max-w-[1280px] px-5 py-8 sm:px-8 sm:py-10">
         <div className="grid min-h-[80vh] grid-cols-1 items-start gap-8 lg:grid-cols-12">
           
@@ -78,7 +78,7 @@ export default function NotFound({ lessonID }: NotFoundProps) {
                 <input
                   type="text"
                   placeholder="Search for another lesson or topic..."
-                  className="w-full rounded-[12px] border border-line bg-surface py-3.5 pl-11 pr-4 text-sm text-ink outline-none transition-all placeholder:text-muted focus:border-brand focus:bg-card focus:ring-2 focus:ring-brand/15"
+                  className="w-full rounded-[12px] border border-line bg-card py-3.5 pl-11 pr-4 text-sm text-ink outline-none transition-all placeholder:text-muted focus:border-brand focus:ring-2 focus:ring-brand/15"
                 />
               </div>
 
