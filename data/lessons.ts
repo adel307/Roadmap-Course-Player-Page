@@ -17,4 +17,4 @@ async function loadLessons(): Promise<Lesson[]> {
     return allLessons;
 }
 
-export const Lessons: Lesson[] = await loadLessons();
+const Lessons: Lesson[] = await loadLessons();

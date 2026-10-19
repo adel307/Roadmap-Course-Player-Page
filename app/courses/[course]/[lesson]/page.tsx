@@ -16,7 +16,7 @@ export default function LessonDetailClient({ params }: PageProps) {
     const resolvedParams = use(params);
     const courseID = resolvedParams.course;
     const lessonID = resolvedParams.lesson;
-    
+
     const { courses, setCourses, lessonsByCourse, loadingCourses, fetchLessonsForCourse } = useCourseStore((state) => state);
 
     useEffect(() => {
@@ -33,9 +33,14 @@ export default function LessonDetailClient({ params }: PageProps) {
             fetchLessonsForCourse(
                 course.id,
                 getPlaylistId(course.promo_video_url) as string,
-                async (courseId, playlistUrl) => {
-                    const response = await fetchLessons(courseId, playlistUrl);
-                    return response.lessons;
+                async (courseId, pId) => {
+                    try{
+                        const res = await fetchLessons(courseId, pId);
+                        return res.lessons;
+                    }catch(e){
+                        console.log(e)
+                        return [];
+                    }
                 }
             );
         }

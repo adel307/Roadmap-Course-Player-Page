@@ -24,8 +24,13 @@ export function CourseClientWrapper({ course }: CourseClientWrapperProps) {
     const playlistId = getPlaylistId(course.promo_video_url);
     if (playlistId && !lessonsByCourse[course.id]) {
       fetchLessonsForCourse(course.id, playlistId, async (courseId, pId) => {
-        const res = await fetchLessons(courseId, pId);
-        return res.lessons;
+        try{
+          const res = await fetchLessons(courseId, pId);
+          return res.lessons;
+        }catch(e){
+          console.log(e)
+          return [];
+        }
       });
     }
   }, [course.id, course.promo_video_url, lessonsByCourse, fetchLessonsForCourse]);

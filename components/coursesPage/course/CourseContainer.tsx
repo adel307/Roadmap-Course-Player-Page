@@ -21,7 +21,7 @@ export default function CourseDetailPageContent({ allCourses, courseID }: Props)
         .filter((c) => c.id !== course.id && c.level === course.level)
         .slice(0, 3);
 
-
+    
     return (
         <main className="min-h-screen bg-page text-ink">
         {/* ---------- Hero ---------- */}

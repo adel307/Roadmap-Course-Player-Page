@@ -1,7 +1,6 @@
 import type { Course } from "@/lib/types/course";
 
 export const courses: Course[] = [
-
     {
         id: "550e8400-e29b-41d4-a716-446655440001",
         isFeatured: true,
@@ -31,7 +30,8 @@ export const courses: Course[] = [
             "Explore common applications of Python",
             "Install the tools needed to write and run code",
             "Write and run your first line of code"
-        ]
+        ],
+
     },
     {
         id: "f2e3d4c5-b6a7-8901-2345-6789abcdef01",
@@ -62,7 +62,8 @@ export const courses: Course[] = [
             "Master core C++ syntax and fundamental programming concepts",
             "Develop algorithmic thinking and problem-solving skills",
             "Set up development environments like Visual Studio and online compilers"
-        ]
+        ],
+        
     },
     {
         id: "550e8400-e29b-41d4-a716-446655440002",
@@ -92,7 +93,7 @@ export const courses: Course[] = [
             "Enter the world of web and front-end development from scratch",
             "Build real-world web pages using HTML5, CSS3, and JavaScript",
             "Apply hands-on coding techniques through project-based learning"
-        ],
+        ], 
     },
     {
         id: "550e8400-e29b-41d4-a716-446655440003",
@@ -212,7 +213,7 @@ export const courses: Course[] = [
             "Build professional Android and iOS apps via cross-platform development",
             "Utilize Flutter & Dart with a single codebase",
             "Apply practical mobile development through hands-on projects"
-        ]
+        ],
     },
     {
         id: "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
@@ -242,7 +243,7 @@ export const courses: Course[] = [
             "Identify common software vulnerabilities (Ethical Hacking & Web Security)",
             "Protect applications and websites against cyber threats",
             "Apply hands-on vulnerability detection techniques"
-        ]
+        ],
     },
     {
         id: "3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f",
@@ -277,8 +278,7 @@ export const courses: Course[] = [
             "Core Security Principles",
             "Threats and Vulnerabilities",
             "Network Security Basics",
-            ""
-        ]
+        ],
     }
 ];
 

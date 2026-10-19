@@ -1,107 +1,131 @@
 import { getYouTubeClient } from "./youtube";
 import { parseISODuration } from "./duration";
 import slugify from "slugify";
-import { Lesson } from "./types/lesson";
+import { Comments, GetPlaylistLessonsOptions, Lesson } from "./types/lesson";
 import type { youtube_v3 } from "googleapis";
 
-interface GetPlaylistLessonsOptions {
-  playlistId: string;
-  courseId: string;
-  freePreviewFirst?: boolean;
-}
-
 export async function getPlaylistLessons({
-  playlistId,
-  courseId,
-  freePreviewFirst = true,
+    playlistId,
+    courseId,
+    freePreviewFirst = true,
+    fetchComments = true,
+    maxCommentsPerVideo = 10,
 }: GetPlaylistLessonsOptions): Promise<Lesson[]> {
-  const youtube = getYouTubeClient();
+    const youtube = getYouTubeClient();
 
-  // Fetch all playlist items.
-  const items: youtube_v3.Schema$PlaylistItem[] = [];
-  let nextPageToken: string | undefined = undefined;
+    // Fetch all playlist items.
+    const items: youtube_v3.Schema$PlaylistItem[] = [];
+    let nextPageToken: string | undefined = undefined;
 
-  do {
-    const res:any = await youtube.playlistItems.list({
-      part: ["snippet", "contentDetails"],
-      playlistId,
-      maxResults: 50,
-      pageToken: nextPageToken,
-    });
+    do {
+        const res:any = await youtube.playlistItems.list({
+            part: ["snippet", "contentDetails"],
+            playlistId,
+            maxResults: 50,
+            pageToken: nextPageToken,
+        });
 
-    if (res.data.items) {
-      items.push(...res.data.items);
+        if (res.data.items) {
+            items.push(...res.data.items);
+        }
+        nextPageToken = res.data.nextPageToken ?? undefined;
+    } while (nextPageToken);
+
+    // Fetch video details, including duration, in batches.
+    const videoIds = items
+        .map((i) => i.snippet?.resourceId?.videoId)
+        .filter((id): id is string => Boolean(id));
+
+    const videosMap: Record<string, youtube_v3.Schema$Video> = {};
+
+    for (let i = 0; i < videoIds.length; i += 50) {
+        const chunk = videoIds.slice(i, i + 50);
+        const res = await youtube.videos.list({
+            part: ["contentDetails", "snippet"],
+            id: chunk,
+        });
+
+        res.data.items?.forEach((v) => {
+            if (v.id) videosMap[v.id] = v;
+        });
     }
-    nextPageToken = res.data.nextPageToken ?? undefined;
-  } while (nextPageToken);
 
-  // Fetch video details, including duration, in batches.
-  const videoIds = items
-    .map((i) => i.snippet?.resourceId?.videoId)
-    .filter((id): id is string => Boolean(id));
+    const now = new Date();
 
-  const videosMap: Record<string, youtube_v3.Schema$Video> = {};
+    const lessons: Lesson[] = await Promise.all(
+        items.map(async (item, index) => {
+            const videoId = item.snippet?.resourceId?.videoId ?? "";
+            const video = videosMap[videoId];
 
-  for (let i = 0; i < videoIds.length; i += 50) {
-    const chunk = videoIds.slice(i, i + 50);
-    const res = await youtube.videos.list({
-      part: ["contentDetails", "snippet"],
-      id: chunk,
-    });
+            const durationSeconds = video?.contentDetails?.duration
+                ? parseISODuration(video.contentDetails.duration)
+                : 0;
 
-    res.data.items?.forEach((v) => {
-      if (v.id) videosMap[v.id] = v;
-    });
-  }
+            const rawTitle = item.snippet?.title ?? "";
+            const cleanTitle = rawTitle.replace(/[{}\[\]]/g, "").trim();
+            const order = index + 1;
 
-  const now = new Date();
+            const slugBase = slugify(cleanTitle, { lower: true, strict: true });
+            const slug = slugBase || `lesson-${order}`;
 
-  const lessons: Lesson[] = items.map((item, index) => {
-    const videoId = item.snippet?.resourceId?.videoId ?? "";
-    const video = videosMap[videoId];
+            const rawDescription = item.snippet?.description ?? "";
+            const doubleNewlineIndex = rawDescription.indexOf("\n");
 
-    const durationSeconds = video?.contentDetails?.duration
-      ? parseISODuration(video.contentDetails.duration)
-      : 0;
+            const trimmedDescription =
+                doubleNewlineIndex !== -1
+                    ? rawDescription.slice(0, doubleNewlineIndex)
+                    : rawDescription;
 
-    const rawTitle = item.snippet?.title ?? "";
-    const cleanTitle = rawTitle.replace(/[{}\[\]]/g, "").trim();
-    const order = index + 1;
+            let commentsList: Comments[] = [];
 
-    const slugBase = slugify(cleanTitle, { lower: true, strict: true });
-    const slug = slugBase || `lesson-${order}`;
+            if (fetchComments && videoId) {
+                try {
+                    const commentsRes = await youtube.commentThreads.list({
+                        part: ["snippet"],
+                        videoId: videoId,
+                        maxResults: maxCommentsPerVideo,
+                        textFormat: "plainText",
+                    });
 
-    const rawDescription = item.snippet?.description ?? "";
-    const doubleNewlineIndex = rawDescription.indexOf("\n");
+                    if (commentsRes.data.items) {
+                        commentsList = commentsRes.data.items.map((thread) => {
+                            const commentSnippet = thread.snippet?.topLevelComment?.snippet;
+                            return {
+                                id: thread.id ?? `${videoId}-comment`,
+                                user:commentSnippet?.authorDisplayName ?? "Anonymous",
+                                comment: commentSnippet?.textDisplay ?? "",
+                                coursesId: courseId,
+                            };
+                        });
+                    }
+                } catch (error) {
+                    console.warn(`Could not fetch comments for video ${videoId}:`, error);
+                }
+            }
 
-    const trimmedDescription =
-      doubleNewlineIndex !== -1
-        ? rawDescription.slice(0, doubleNewlineIndex)
-        : rawDescription;
-
-
-    return {
-      id: videoId || `${playlistId}-${order}`,
-      coursesId: courseId,
-      title: cleanTitle,
-      slug,
-      description: trimmedDescription.slice(0, 500),
-      videoProvider: "youtube",
-      videoUrl: `https://www.youtube.com/watch?v=${videoId}&list=${playlistId}&index=${order}`,
-      thumbnail:
-        item.snippet?.thumbnails?.high?.url ??
-        item.snippet?.thumbnails?.default?.url ??
-        "null",
-      body: null,
-      durationSeconds,
-      order,
-      isFreePreview: freePreviewFirst && order === 1,
-      isPublished: true,
-      createdAt: now,
-      updatedAt: now,
-      deletedAt: null,
-    };
-  });
-
-  return lessons;
+            return {
+                id: videoId || `${playlistId}-${order}`,
+                coursesId: courseId,
+                title: cleanTitle,
+                slug,
+                description: trimmedDescription.slice(0, 500),
+                videoProvider: "youtube",
+                videoUrl: `https://www.youtube.com/watch?v=${videoId}&list=${playlistId}&index=${order}`,
+                thumbnail:
+                    item.snippet?.thumbnails?.high?.url ??
+                    item.snippet?.thumbnails?.default?.url ??
+                    "null",
+                body: null,
+                durationSeconds,
+                order,
+                isFreePreview: freePreviewFirst && order === 1,
+                isPublished: true,
+                createdAt: now,
+                updatedAt: now,
+                deletedAt: null,
+                comments: commentsList,
+            };
+        })
+    )
+    return lessons;
 }
