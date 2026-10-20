@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight, PlayCircle } from "lucide-react";
 import { useCourseStore } from "@/lib/store/useCourseStore";
 import { fetchLessons } from "@/lib/api/fetchLessons";
@@ -20,23 +20,30 @@ export function CourseClientWrapper({ course }: CourseClientWrapperProps) {
 
   const [currentPage, setCurrentPage] = useState(0);
 
-  useEffect(() => {
-    const playlistId = getPlaylistId(course.promo_video_url);
-    if (playlistId && !lessonsByCourse[course.id]) {
-      fetchLessonsForCourse(course.id, playlistId, async (courseId, pId) => {
-        try{
+  const loadLessons = useCallback(() => {
+    try {
+      const playlistId = getPlaylistId(course.promo_video_url);
+      if (playlistId) {
+        fetchLessonsForCourse(course.id, playlistId, async (courseId, pId) => {
           const res = await fetchLessons(courseId, pId);
           return res.lessons;
-        }catch(e){
-          console.log(e)
-          return [];
-        }
-      });
+        });
+      } else {
+        console.warn("Invalid or missing playlist URL for course:", course.id);
+      }
+    } catch (error) {
+      console.error("Error extracting playlist ID:", error);
     }
-  }, [course.id, course.promo_video_url, lessonsByCourse, fetchLessonsForCourse]);
+  }, [course.id, course.promo_video_url, fetchLessonsForCourse]);
 
-  const courseLessons = (lessonsByCourse[course.id] || []).sort(
-    (a, b) => a.order - b.order
+  useEffect(() => {
+    if (!lessonsByCourse[course.id] && !loadingCourses[course.id] && !errors[course.id]) {
+      loadLessons();
+    }
+  }, [course.id, lessonsByCourse, loadingCourses, errors, loadLessons]);
+
+  const courseLessons = [...(lessonsByCourse[course.id] || [])].sort(
+    (a, b) => (a.order ?? 0) - (b.order ?? 0)
   );
 
   const isLoading = loadingCourses[course.id];
@@ -44,10 +51,11 @@ export function CourseClientWrapper({ course }: CourseClientWrapperProps) {
 
   const totalPages = Math.ceil(courseLessons.length / ITEMS_PER_PAGE);
 
-  // Show five lessons per page.
+  // تحديد الدروس المعروضة في الصفحة الحالية
+  const startIndex = currentPage * ITEMS_PER_PAGE;
   const visibleLessons = courseLessons.slice(
-    currentPage * ITEMS_PER_PAGE,
-    (currentPage + 1) * ITEMS_PER_PAGE
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
   );
 
   function handleNext() {
@@ -70,10 +78,17 @@ export function CourseClientWrapper({ course }: CourseClientWrapperProps) {
     );
   }
 
+  // التعامل مع الخطأ وإعطاء المستخدم خيار إعادة المحاولة
   if (error) {
     return (
-      <div className="py-12 text-center text-sm text-red-500">
-        Unable to load lessons: {error}
+      <div className="py-12 text-center flex flex-col items-center justify-center gap-3">
+        <p className="text-sm text-red-500">Unable to load lessons: {error}</p>
+        <button
+          onClick={loadLessons}
+          className="px-4 py-2 bg-primary text-white rounded-md text-xs font-semibold hover:opacity-95 transition"
+        >
+          إعادة المحاولة
+        </button>
       </div>
     );
   }
@@ -127,7 +142,7 @@ export function CourseClientWrapper({ course }: CourseClientWrapperProps) {
         )}
       </div>
 
-      {/* Lessons List (Cards matching Testimonials style) */}
+      {/* Lessons List */}
       <div className="grid gap-4 sm:grid-cols-1">
         {visibleLessons.map((lesson) => (
           <Link
@@ -162,7 +177,7 @@ export function CourseClientWrapper({ course }: CourseClientWrapperProps) {
                 {lesson.durationSeconds}
               </div>
             )}
-        </Link>
+          </Link>
         ))}
       </div>
 

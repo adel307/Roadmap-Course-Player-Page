@@ -91,10 +91,10 @@ export function CoursesPage({ courses }: Props) {
               </span>
               <span>
                 <span className="block text-lg font-bold leading-5 text-ink">
-                  {courses.length}
+                  {courses.length || 0}
                 </span>
                 <span className="mt-1 block text-xs text-muted">
-                  {courses.length === 1 ? "course available" : "courses available"}
+                  {(courses || []).length === 1 ? "course available" : "courses available"}
                 </span>
               </span>
             </div>
@@ -111,22 +111,13 @@ export function CoursesPage({ courses }: Props) {
             </p>
           </div>
           <span className="rounded-full border border-line bg-card px-3 py-1.5 text-xs font-semibold text-muted">
-            {courses.length} {courses.length === 1 ? "course" : "courses"}
+            {(courses || []).length} {(courses || []).length === 1 ? "course" : "courses"}
           </span>
         </div>
 
-        {courses.length > 0 ? (
+        {(courses || []).length > 0 ? (
           <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {courses.map((course) => {
-
-              console.log(<Image
-                        src={course.thumbnail_url}
-                        alt={course.title}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                        className="object-cover transition duration-500 group-hover:scale-105"
-                      />)
-
               return (
                 <Link
                   href={`/courses/${course.id}`}

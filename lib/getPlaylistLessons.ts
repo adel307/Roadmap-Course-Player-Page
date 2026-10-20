@@ -3,6 +3,7 @@ import { parseISODuration } from "./duration";
 import slugify from "slugify";
 import { Comments, GetPlaylistLessonsOptions, Lesson } from "./types/lesson";
 import type { youtube_v3 } from "googleapis";
+import type { YouTubePlaylistItem, YouTubePlaylistItemResponse } from "./types/youtube.types";
 
 export async function getPlaylistLessons({
     playlistId,
@@ -14,16 +15,18 @@ export async function getPlaylistLessons({
     const youtube = getYouTubeClient();
 
     // Fetch all playlist items.
-    const items: youtube_v3.Schema$PlaylistItem[] = [];
+    const items: YouTubePlaylistItem[] = [];
     let nextPageToken: string | undefined = undefined;
 
     do {
-        const res:any = await youtube.playlistItems.list({
+        const res: { data: YouTubePlaylistItemResponse } = await youtube.playlistItems.list({
             part: ["snippet", "contentDetails"],
             playlistId,
             maxResults: 50,
             pageToken: nextPageToken,
         });
+
+        console.log(res)
 
         if (res.data.items) {
             items.push(...res.data.items);
@@ -99,7 +102,7 @@ export async function getPlaylistLessons({
                         });
                     }
                 } catch (error) {
-                    console.warn(`Could not fetch comments for video ${videoId}:`, error);
+                    console.log(`Could not fetch comments for video ${videoId}:`, error);
                 }
             }
 

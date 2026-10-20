@@ -5,8 +5,8 @@ import { ThemeToggle } from "./ThemeToggle";
 
 const navigation = [
   { label: "home", href: "/" },
-  { label: "All courses", href: "/courses" },
   { label: "My courses", href: "/my-courses" },
+  { label: "All courses", href: "/courses" },
   { label: "saved lessons", href: "/lessons/saved" },
 ];
 
