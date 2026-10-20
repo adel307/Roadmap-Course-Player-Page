@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   Star,
@@ -57,11 +58,12 @@ export function FeaturedCourses() {
               {/* Course thumbnail / fallback */}
               <div className="relative aspect-video w-full overflow-hidden bg-surface">
                 {course.thumbnail_url ? (
-                  <img
+                  <Image
                     src={course.thumbnail_url}
                     alt={course.title}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    fill
+                    sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                    className="object-cover transition duration-500 group-hover:scale-105"
                   />
                 ) : (
                   <div className="relative flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-pale via-card to-brand-pale dark:from-surface dark:via-card dark:to-surface">

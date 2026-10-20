@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   Play,
   ArrowLeft,
@@ -58,9 +59,12 @@ export default function NotFoundPage() {
               <div className="relative aspect-video w-full bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-center justify-center">
                 
                 {/* Background Image Placeholder */}
-                <img
+                <Image
                   src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=80"
                   alt="404 Illustration Background"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority
                   className="absolute inset-0 h-full w-full object-cover mix-blend-overlay opacity-80"
                 />
 

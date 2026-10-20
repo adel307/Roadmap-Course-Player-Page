@@ -1,11 +1,7 @@
 import { pillars } from "./data";
 import { PillarCard } from "./PillarCard";
 
-type PillarsListProps = {
-  variant?: "mobile" | "desktop";
-};
-
-export function PillarsList({ variant = "desktop" }: PillarsListProps) {
+export function PillarsList() {
     return (
       <div className="mt-8 grid grid-cols-1 gap-3 border-t border-line pt-6">
         {pillars.map((pillar) => (

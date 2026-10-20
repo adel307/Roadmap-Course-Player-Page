@@ -30,7 +30,7 @@ export function MobileHero() {
 
       <HeroHighlights size="sm" />
 
-      <PillarsList variant="mobile" />
+      <PillarsList />
     </div>
   );
 }

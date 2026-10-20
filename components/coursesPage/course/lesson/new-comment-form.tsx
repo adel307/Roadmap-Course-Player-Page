@@ -13,7 +13,7 @@ type Props = {
 export function CommentForm({ course, lesson }: Props) {
     const [newCommentText, setNewCommentText] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isFocused, setIsFocused] = useState(false);
+    const  setIsFocused = useState(false)[1];
 
     const updateLesson = useCourseStore((state) => state.updateLesson);
 

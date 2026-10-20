@@ -16,7 +16,7 @@ export function DesktopHero() {
         <HeroDescription size="md" />
         <HeroCTAs size="md" />
         <HeroHighlights size="md" />
-        <PillarsList variant="desktop" />
+        <PillarsList />
       </div>
 
       {/* RIGHT IMAGE SHOWCASE */}
