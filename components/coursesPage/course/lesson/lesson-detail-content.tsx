@@ -49,7 +49,7 @@ export default function LessonDetailContent({
                                         Course lessons
                                     </p>
                                     <p className="truncate text-[11px] text-muted">
-                                        Lesson {currentNumber} of {courseLessons.length}
+                                        Lesson {currentNumber} of {(courseLessons || []).length}
                                     </p>
                                 </div>
                             </div>

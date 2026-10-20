@@ -25,7 +25,7 @@ export function LessonHeader({ course, lesson }: Props) {
           </Link>
           <span>{">"}</span>
           <Link
-            href={`/courses/${course.slug}`}
+            href={`/courses/${course.id}`}
             className="transition hover:text-brand"
           >
             {course.title}
