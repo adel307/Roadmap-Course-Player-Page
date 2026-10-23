@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "jest",
-    "verify":" npm test -- --passWithNoTests && npm run typecheck && npm run lint"
+    "test:watch": "jest --watch",
+    "verify": " npm test && npm run typecheck && npm run lint"
   },
   "dependencies": {
     "@fontsource-variable/cairo": "^5.2.6",
@@ -19,7 +20,7 @@
     "googleapis": "^185.0.0",
     "isodate": "^0.1.4",
     "lucide-react": "^0.468.0",
-    "next": "^16.4.0",
+    "next": "^16.4.2",
     "next-cloudinary": "^6.19.3",
     "next-themes": "^0.4.6",
     "react": "^19.0.0",

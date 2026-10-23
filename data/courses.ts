@@ -74,8 +74,8 @@ export const courses: Course[] = [
         description: 
             "The essential course for anyone wishing to enter the world of web and front-end development from scratch through real-world projects.",
         thumbnail_url: "https://res.cloudinary.com/dlndowzi/image/upload/v1792356699/web-fundamentals-html5-css3-javascript.jpg",
-        price: 99.99,
-        discount_price: 79.99,
+        price: 100,
+        discount_price: 80,
         language: "English",
         status: "published",
         created_at: new Date("2026-01-15T10:00:00Z"),
@@ -224,8 +224,8 @@ export const courses: Course[] = [
         description:
             "Learn about common software vulnerabilities and how to protect applications and websites against them through practical security labs.",
         thumbnail_url: "https://res.cloudinary.com/dlndowzi/image/upload/v1792356705/software-testing-fundamentals-vulnerability-detection.png",
-        price: 149.99,
-        discount_price: 0,
+        price: 150,
+        discount_price: 100,
         language: "English",
         status: "published",
         created_at: "2024-03-01T11:15:00Z",

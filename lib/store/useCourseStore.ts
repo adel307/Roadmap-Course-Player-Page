@@ -1,36 +1,46 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { courses as mainCourses } from "@/data/courses";
 import { Course } from '../types/course';
 import { Lesson } from '../types/lesson';
 
 interface CourseState {
+  hasHydrated: boolean;
+  setHasHydrated: (v: boolean) => void;
+
   courses: Course[];
+  getCourseById: (courseId: string ) => Course | undefined;
   setCourses: (courses: Course[]) => void;
-  updateCourse: (courseId: string | number, updatedData: Partial<Course>) => void;
-  lessonsByCourse: Record<string, Lesson[]>;
-  savedLessonIds: string[];
-  toggleSavedLesson: (lessonId: string) => void;
+  updateCourse: (courseId: string , updatedData: Partial<Course>) => void;
   loadingCourses: Record<string, boolean>;
-  errors: Record<string, string | null>;
+
+  getAllLessons: () => Lesson[];
+  lessonsByCourse: Record<string, Lesson[]>;
   fetchLessonsForCourse: (
     courseId: string,
     playlistUrl: string | null,
     youtubeApiCallFn: (courseId: string, playlistUrl: string) => Promise<Lesson[]>
   ) => Promise<void>;
+  savedLessonsIds: string[];
+  toggleSavedLesson: (courseId: string, lessonId: string ) => void;
   updateLesson: (
-    courseId: string,
-    lessonId: string | number,
+  courseId: string,
+  lessonId: string ,
     updatedData: Partial<Lesson>
   ) => void;
+
+  errors: Record<string, string | null>;
 }
 
 export const useCourseStore = create<CourseState>()(
   persist(
     (set, get) => ({
-      courses: mainCourses,
-      setCourses: (courses) => set({ courses }),
+      hasHydrated: false,
+      setHasHydrated: (v) => set({ hasHydrated: v }),
 
+      courses: [],
+      getCourseById: (courseId) => {
+        return get().courses.find((course) => course.id === courseId);
+      },
       updateCourse: (courseId, updatedData) => {
         set((state) => {
           const updatedCourses = state.courses.map((course) =>
@@ -39,18 +49,14 @@ export const useCourseStore = create<CourseState>()(
           return { courses: updatedCourses };
         });
       },
-
-      lessonsByCourse: {},
-      savedLessonIds: [],
-      toggleSavedLesson: (lessonId) => {
-        set((state) => ({
-          savedLessonIds: state.savedLessonIds.includes(lessonId)
-            ? state.savedLessonIds.filter((savedId) => savedId !== lessonId)
-            : [...state.savedLessonIds, lessonId],
-        }));
-      },
+      setCourses: (courses) => set({ courses }),
       loadingCourses: {},
-      errors: {},
+
+      getAllLessons: () => {
+        const state = get();
+        // نقوم بدمج مصفوفات الدروس الخاصة بكل كورس في مصفوفة واحدة كبيرة
+        return Object.values(state.lessonsByCourse).flat();
+      },
 
       fetchLessonsForCourse: async (courseId, playlistUrl, youtubeApiCallFn) => {
         const state = get();
@@ -91,6 +97,21 @@ export const useCourseStore = create<CourseState>()(
         }
       },
 
+      lessonsByCourse: {},
+      savedLessonsIds: [],
+      toggleSavedLesson: (courseId, lessonId) => {
+        const state = get();
+        const courseLessons = state.lessonsByCourse[courseId];
+        if (!courseLessons) return;
+
+        const lesson = courseLessons.find((l) => l.id === lessonId);
+        if (lesson) {
+          const updatedIsSaved = !lesson.isSaved;
+          state.updateLesson(courseId, lessonId, { isSaved: updatedIsSaved });
+        }
+      },
+      errors: {},
+
       updateLesson: (courseId, lessonId, updatedData) => {
         set((state) => {
           const courseLessons = state.lessonsByCourse[courseId] || [];
@@ -107,12 +128,17 @@ export const useCourseStore = create<CourseState>()(
         });
       },
     }),
+
+    
     {
       name: 'course-storage', // Storage key in localStorage.
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
       partialize: (state) => ({
         courses: state.courses,
         lessonsByCourse: state.lessonsByCourse,
-        savedLessonIds: state.savedLessonIds,
+        savedLessonsIds: state.savedLessonsIds,
       }),
     }
   )

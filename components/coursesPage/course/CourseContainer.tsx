@@ -8,24 +8,18 @@ import { CourseClientWrapper } from "@/components/coursesPage/course/CourseClien
 import { Course } from "@/lib/types/course";
 
 type Props = {
-    allCourses: Course[];
-    courseID:string;
+    shownCourse: Course;
+    relatedCourses: Course[];
 };
 
-export default function CourseDetailPageContent({ allCourses, courseID }: Props) {
+export default function CourseDetailPageContent({ relatedCourses ,  shownCourse }: Props) {
 
-    const course = allCourses.find((c) => String(c.id) === courseID);
-    if (!course) notFound();
+    if (!shownCourse) notFound();
 
-    const related = allCourses
-        .filter((c) => c.id !== course.id && c.level === course.level)
-        .slice(0, 3);
-
-    
     return (
         <main className="min-h-screen bg-page/55 text-ink dark:bg-page">
         {/* ---------- Hero ---------- */}
-        <CourseHero course={course} level={course.level} />
+        <CourseHero course={shownCourse} level={shownCourse.level} />
 
         {/* ---------- Body ---------- */}
         <section className="mx-auto max-w-7xl px-5 py-9 sm:px-8 sm:py-12">
@@ -33,11 +27,11 @@ export default function CourseDetailPageContent({ allCourses, courseID }: Props)
             {/* ===== Main column ===== */}
             <div className="space-y-6 lg:col-span-8">
                 {/* Preview */}
-                {course.thumbnail_url ? (
+                {shownCourse.thumbnail_url ? (
                 <CoursePromoPlayer
-                    title={course.title}
-                    thumbnailUrl={course.thumbnail_url}
-                    videoUrl={course.promo_video_url}
+                    title={shownCourse.title}
+                    thumbnailUrl={shownCourse.thumbnail_url}
+                    videoUrl={shownCourse.promo_video_url}
                 />
                 ) : (
                 <div className="relative flex aspect-video items-center justify-center overflow-hidden rounded-2xl border border-line bg-gradient-to-br from-brand-dark to-navy shadow-card">
@@ -48,27 +42,27 @@ export default function CourseDetailPageContent({ allCourses, courseID }: Props)
                 )}
 
                 {/* What you'll learn */}
-                <WhatYouWillLearn course={course} />
+                <WhatYouWillLearn course={shownCourse} />
 
                 {/* Curriculum */}
-                <CourseClientWrapper course={course} />
+                <CourseClientWrapper course={shownCourse} />
 
                 {/* Requirements */}
-                {course.requirements.length > 0 && (
+                {shownCourse.requirements.length > 0 && (
                     <section className="space-y-4 transition-all duration-300 ease-out hover:-translate-y-2">
-                        {/* Main card — matches CourseSidebar pricing card */}
-                        <div className="rounded-2xl border border-line bg-navy-deep p-6 shadow-card sm:p-7">
-                        <h2 className="text-sm font-bold text-heading-on-dark">Requirements</h2>
+                        {/* Main card */}
+                        <div className="rounded-2xl border border-line bg-card p-6 shadow-card sm:p-7">
+                            <h2 className="text-sm font-bold text-ink">Requirements</h2>
 
                             <ul className="mt-4 space-y-3.5 text-sm">
-                                {course.requirements.map((req: string) => (
-                                <li
-                                    key={req}
-                                    className="flex items-start gap-3 leading-6 text-white"
-                                >
-                                    <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
-                                    <span>{req}</span>
-                                </li>
+                                {shownCourse.requirements.map((req: string) => (
+                                    <li
+                                        key={req}
+                                        className="flex items-start gap-3 leading-6 text-ink/80"
+                                    >
+                                        <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
+                                        <span>{req}</span>
+                                    </li>
                                 ))}
                             </ul>
                         </div>
@@ -77,11 +71,11 @@ export default function CourseDetailPageContent({ allCourses, courseID }: Props)
             </div>
 
             {/* ===== Sidebar ===== */}
-            <CourseSidebar course={course} />
+            <CourseSidebar course={shownCourse} />
             </div>
 
             {/* ---------- Related ---------- */}
-            <RelatedCourses courses={related} />
+            <RelatedCourses courses={relatedCourses} />
         </section>
         </main>
     );

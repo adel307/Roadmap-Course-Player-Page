@@ -90,15 +90,11 @@ export function CourseSidebar({ course }: CourseSidebarProps) {
     try {
       if (course.inMyCard) {
         updateCourse(course.id, { inMyCard: false });
-        
         alert("Course removed from your courses.");
-        
         router.push(`/courses`);
       } else {
         updateCourse(course.id, { inMyCard: true });
-        
         alert("Course added to your courses.");
-        
         router.push("/my-courses");
       }
     } catch (error) {
@@ -110,14 +106,14 @@ export function CourseSidebar({ course }: CourseSidebarProps) {
   return (
     <aside className="space-y-4 lg:sticky lg:top-24 lg:col-span-4">
       {/* Pricing card */}
-      <div className="rounded-2xl border border-line bg-navy-deep p-6 text-white shadow-card transition-all duration-300 ease-out hover:-translate-y-1">
+      <div className="rounded-2xl border border-line bg-card p-6 text-ink shadow-card transition-all duration-300 ease-out hover:-translate-y-1">
         <div className="flex items-baseline gap-3">
-          <span className="text-3xl font-extrabold text-heading-on-dark">
+          <span className="text-3xl font-extrabold text-ink">
             {isFree ? "Free" : formatMoney(currentPrice)}
           </span>
           {hasDiscount && (
             <>
-              <span className="text-sm text-muted line-through">
+              <span className="text-sm text-ink/60 line-through">
                 {formatMoney(course.price)}
               </span>
               <span className="rounded-full bg-brand-pale px-2 py-0.5 text-[10px] font-bold text-brand-dark">
@@ -137,18 +133,18 @@ export function CourseSidebar({ course }: CourseSidebarProps) {
         </button>
 
         <div className="mt-6 border-t border-line pt-5">
-          <h3 className="text-sm font-bold text-heading-on-dark">This course includes</h3>
+          <h3 className="text-sm font-bold text-ink">This course includes</h3>
           <ul className="mt-4 space-y-3.5 text-sm">
             {includes.map(({ icon: Icon, label, value }) => (
               <li
                 key={label}
                 className="flex items-center justify-between gap-3"
               >
-                <span className="flex items-center gap-2 text-white">
-                  <Icon size={16} className="text-muted-on-dark" />
+                <span className="flex items-center gap-2 text-ink/80">
+                  <Icon size={16} className="text-ink/60" />
                   {label}
                 </span>
-                <span className="font-semibold text-heading-on-dark">{value}</span>
+                <span className="font-semibold text-ink">{value}</span>
               </li>
             ))}
           </ul>

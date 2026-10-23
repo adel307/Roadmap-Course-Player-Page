@@ -1,111 +1,183 @@
-import Link from "next/link";
-import { LessonSidebar } from "@/components/coursesPage/course/lesson/lesson-sidebar";
-import { Course } from "@/lib/types/course";
-import { Search, BookOpen, ArrowLeft, Home } from "lucide-react";
+"use client";
 
-interface NotFoundProps {
-  lessonID: string;
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+type NotFoundReason =
+    | "invalid-course-id"
+    | "course-not-found"
+    | "lesson-not-found"
+    | "invalid-lesson-id";
+
+type NotFoundProps = {
+    lessonID?: string;
+    courseID?: string;
+    reason?: NotFoundReason;
+};
+
+type ReasonContent = {
+    title: string;
+    description: string;
+    icon: React.ReactNode;
+};
+
+function getReasonContent(
+    reason: NotFoundReason | undefined,
+    lessonID?: string
+): ReasonContent {
+    switch (reason) {
+        case "invalid-course-id":
+            return {
+                title: "معرّف الكورس غير صالح",
+                description:
+                    "الرابط الذي تحاول الوصول إليه لا يحتوي على معرّف كورس صحيح. تأكد من الرابط أو عد إلى قائمة الكورسات.",
+                icon: <BrokenLinkIcon />,
+            };
+        case "course-not-found":
+            return {
+                title: "الكورس غير موجود",
+                description:
+                    "لم نتمكن من العثور على هذا الكورس. ربما تم حذفه أو أن الرابط غير صحيح.",
+                icon: <CourseOffIcon />,
+            };
+        case "lesson-not-found":
+        case "invalid-lesson-id":
+        default:
+            return {
+                title: "الدرس غير موجود",
+                description: lessonID
+                    ? `لم نتمكن من العثور على الدرس بالمعرّف "${lessonID}". ربما تم حذفه أو أن الرابط غير صحيح.`
+                    : "لم نتمكن من العثور على الدرس المطلوب. ربما تم حذفه أو أن الرابط غير صحيح.",
+                icon: <LessonOffIcon />,
+            };
+    }
 }
 
-export default function NotFound({ lessonID }: NotFoundProps) {
-  // Default fallback course object adhering to the identity
-  const course: Course = {
-    id: lessonID || "",
-    isFeatured: false,
-    inMyCard: false,
-    title: "Lesson Not Found",
-    slug: "",
-    description: "",
-    thumbnail_url: "",
-    price: 0,
-    language: "",
-    status: "published",
-    created_at: "",
-    updated_at: "",
-    discount_price: 0,
-    promo_video_url: "",
-    level: "beginner",
-    average_rating: 0,
-    total_reviews: 0,
-    total_enrollments: 0,
-    total_duration_seconds: 0,
-    meta_title: "",
-    meta_description: "",
-    requirements: [],
-    what_will_learn: [],
-  };
+export default function NotFound({
+    lessonID,
+    courseID,
+    reason,
+}: NotFoundProps) {
+    const router = useRouter();
+    const { title, description, icon } = getReasonContent(reason, lessonID);
 
-  return (
-    <main className="min-h-screen bg-page/55 font-sans text-ink antialiased dark:bg-page">
-      <div className="mx-auto max-w-[1280px] px-5 py-8 sm:px-8 sm:py-10">
-        <div className="grid min-h-[80vh] grid-cols-1 items-start gap-8 lg:grid-cols-12">
-          
-          {/* ===== Sidebar (4 Columns) ===== */}
-          <aside className="order-2 lg:order-1 lg:col-span-4">
-            <div className="overflow-hidden rounded-[18px] border border-line bg-card shadow-card">
-              <LessonSidebar
-                course={course}
-                lessons={[]}
-                currentLessonId={lessonID}
-              />
+    // رابط العودة: صفحة الكورس إن وُجد معرّف، وإلا صفحة الكورسات
+    const backHref = courseID ? `/courses/${courseID}` : "/courses";
+
+    return (
+        <main
+            dir="rtl"
+            className="flex min-h-screen flex-col items-center justify-center gap-6 bg-page/55 p-6 text-center dark:bg-page"
+        >
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 text-primary dark:bg-primary/20">
+                {icon}
             </div>
-          </aside>
 
-          {/* ===== Main Content (8 Columns) ===== */}
-          <section className="order-1 flex flex-col justify-center lg:order-2 lg:col-span-8">
-            <div className="mx-auto w-full max-w-2xl rounded-[20px] border border-line bg-card p-8 text-center shadow-card sm:p-12">
-              
-              {/* Icon Container with Teal Tint */}
-              <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-brand-pale text-brand-dark shadow-sm">
-                <BookOpen className="h-9 w-9 stroke-[1.5]" />
-              </div>
+            <div className="space-y-2">
+                <h1 className="text-2xl font-bold text-foreground sm:text-3xl">
+                    {title}
+                </h1>
+                <p className="max-w-md text-sm text-muted sm:text-base">
+                    {description}
+                </p>
+                {lessonID && (
+                    <p className="text-xs text-muted/70">
+                        معرّف الدرس:{" "}
+                        <span className="font-mono">{lessonID}</span>
+                    </p>
+                )}
+            </div>
 
-              {/* Page Title */}
-              <h1 className="text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
-                Lesson not found
-              </h1>
-
-              {/* Subtitle */}
-              <p className="mt-3 text-[15px] leading-relaxed text-muted">
-                Sorry, we couldn&apos;t find that lesson. It may have been removed or the link may be incorrect. Choose another lesson from the sidebar to continue learning.
-              </p>
-
-              {/* Search Bar Element matching UI Specs */}
-              <div className="relative mt-8">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-muted">
-                  <Search className="h-4 w-4 stroke-[1.5]" />
-                </span>
-                <input
-                  type="text"
-                  placeholder="Search for another lesson or topic..."
-                  className="w-full rounded-[12px] border border-line bg-card py-3.5 pl-11 pr-4 text-sm text-ink outline-none transition-all placeholder:text-muted focus:border-brand focus:ring-2 focus:ring-brand/15"
-                />
-              </div>
-
-              {/* Action Buttons */}
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-                <Link
-                  href="/"
-                  className="inline-flex items-center gap-2 rounded-[10px] bg-brand px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-brand-dark active:scale-[0.98]"
-                >
-                  <Home className="h-4 w-4" />
-                  Back to home
-                </Link>
-                
+            <div className="flex flex-wrap items-center justify-center gap-3">
                 <button
-                  onClick={() => window.history.back()}
-                  className="inline-flex items-center gap-2 rounded-[10px] border border-brand bg-card px-6 py-3 text-sm font-semibold text-brand-dark transition-all hover:bg-brand-pale active:scale-[0.98]"
+                    onClick={() => router.back()}
+                    className="rounded-md border border-border bg-transparent px-4 py-2 text-sm font-medium text-foreground transition hover:bg-page"
                 >
-                  <ArrowLeft className="h-4 w-4" />
-                  Go back
+                    رجوع
                 </button>
-              </div>
 
+                <Link
+                    href="/"
+                    className="rounded-md border border-border bg-transparent px-4 py-2 text-sm font-medium text-foreground transition hover:bg-page"
+                >
+                    الصفحة الرئيسية
+                </Link>
+
+                <Link
+                    href={backHref}
+                    className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white transition hover:opacity-90"
+                >
+                    {courseID ? "العودة إلى الكورس" : "تصفح الكورسات"}
+                </Link>
             </div>
-          </section>
+        </main>
+    );
+}
 
-        </div>
-      </div>
-    </main>
-  );
+/* ============================================================
+   أيقونات SVG بسيطة (بدون مكتبات خارجية)
+   ============================================================ */
+
+function BrokenLinkIcon() {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-10 w-10"
+            aria-hidden="true"
+        >
+            <path d="M9 15l6-6" />
+            <path d="M11 6l.463-.536a5 5 0 0 1 7.071 7.072L18 13" />
+            <path d="M13 18l-.397.534a5.068 5.068 0 0 1-7.127 0 4.972 4.972 0 0 1 0-7.071L6 11" />
+        </svg>
+    );
+}
+
+function CourseOffIcon() {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-10 w-10"
+            aria-hidden="true"
+        >
+            <path d="M4 4l16 16" />
+            <path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" />
+            <path d="M8 10h2M8 14h4" />
+        </svg>
+    );
+}
+
+function LessonOffIcon() {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-10 w-10"
+            aria-hidden="true"
+        >
+            <path d="M3 3l18 18" />
+            <path d="M14 4h5v5" />
+            <path d="M4 14v-5h5" />
+            <path d="M10 4H6a2 2 0 0 0-2 2v4" />
+            <path d="M20 10v4" />
+            <path d="M4 16v2a2 2 0 0 0 2 2h4" />
+            <path d="M16 20h2a2 2 0 0 0 2-2v-2" />
+        </svg>
+    );
 }

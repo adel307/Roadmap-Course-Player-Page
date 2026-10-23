@@ -172,11 +172,9 @@ export function CourseClientWrapper({ course }: CourseClientWrapperProps) {
               </div>
             </div>
 
-            {lesson.durationSeconds && (
-              <div className="mt-3 text-xs font-medium text-muted transition-colors duration-300 group-hover:text-white/70 sm:mt-0 sm:shrink-0">
-                {lesson.durationSeconds}
-              </div>
-            )}
+            <div className="mt-3 text-base font-bold text-ink transition-colors duration-300 group-hover:text-white/70 sm:mt-0 sm:shrink-0">
+              {"=>"}
+            </div>
           </Link>
         ))}
       </div>

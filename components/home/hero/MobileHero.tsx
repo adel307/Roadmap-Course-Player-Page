@@ -18,7 +18,7 @@ export function MobileHero() {
           <HeroTitle size="sm" />
         </div>
 
-        {/* Laptop side — LEFT */}
+        {/* Laptop side */}
         <MobileLaptopShowcase />
       </div>
 

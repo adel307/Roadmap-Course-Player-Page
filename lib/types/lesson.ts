@@ -22,6 +22,7 @@ export interface Lesson {
     title: string;
     slug: string | null;
     description: string ;
+    isSaved:boolean;
 
     videoProvider: string | null;
     videoUrl: string | null;

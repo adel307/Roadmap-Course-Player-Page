@@ -14,39 +14,39 @@ import {
 } from "lucide-react";
 import { useCourseStore } from "@/lib/store/useCourseStore";
 import { formatDuration } from "@/lib/utils/lesson-utils";
+import { Course } from "@/lib/types/course";
+import { Lesson } from "@/lib/types/lesson";
 
 export default function SavedLessonsPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const courses = useCourseStore((state) => state.courses);
-  const lessonsByCourse = useCourseStore((state) => state.lessonsByCourse);
-  const savedLessonIds = useCourseStore((state) => state.savedLessonIds);
+  const getAllLessons = useCourseStore((state) => state.getAllLessons);
+  const getCourseById = useCourseStore((state) => state.getCourseById);
   const toggleSavedLesson = useCourseStore((state) => state.toggleSavedLesson);
 
-  const savedLessons = useMemo(
-    () =>
-      savedLessonIds.flatMap((lessonId) =>
-        courses.flatMap((course) => {
-          const lesson = lessonsByCourse[course.id]?.find(
-            (candidate) =>
-              candidate.id === lessonId &&
-              candidate.isPublished &&
-              !candidate.deletedAt,
-          );
+  const allLessons = getAllLessons();
 
-          return lesson ? [{ course, lesson }] : [];
-        }),
-      ),
-    [courses, lessonsByCourse, savedLessonIds],
-  );
+  const savedLessons = useMemo(() => {
+    return allLessons
+      .filter((lesson) => lesson.isSaved && lesson.isPublished && !lesson.deletedAt)
+      .map((lesson) => {
+        const course = getCourseById(lesson.coursesId);
+        return course ? { course, lesson } : null;
+      })
+      .filter(Boolean) as { course: Course; lesson: Lesson }[];
+  }, [allLessons, getCourseById]);
 
-  const filteredLessons = savedLessons.filter(({ course, lesson }) => {
+  const filteredLessons = useMemo(() => {
     const query = searchQuery.trim().toLocaleLowerCase();
-    return (
-      !query ||
-      lesson.title.toLocaleLowerCase().includes(query) ||
-      course.title.toLocaleLowerCase().includes(query)
-    );
-  });
+    if (!query) return savedLessons;
+
+    return savedLessons.filter(({ course, lesson }) => {
+      const lessonMatch = lesson.title.toLocaleLowerCase().includes(query);
+      const courseMatch = course.title.toLocaleLowerCase().includes(query);
+      return lessonMatch || courseMatch;
+    });
+  }, [savedLessons, searchQuery]);
+
+  const hasSavedLessons = savedLessons.length > 0;
 
   return (
     <main className="min-h-screen bg-page/55 text-ink dark:bg-page">
@@ -99,13 +99,13 @@ export default function SavedLessonsPage() {
           <div>
             <h2 className="text-lg font-bold text-ink">Your collection</h2>
             <p className="mt-1 text-sm text-muted">
-              {savedLessons.length > 0
+              {hasSavedLessons
                 ? "A little progress, whenever you’re ready."
                 : "Lessons you bookmark will be collected here."}
             </p>
           </div>
 
-          {savedLessons.length > 0 && (
+          {hasSavedLessons && (
             <label className="relative block w-full sm:max-w-xs">
               <Search
                 size={17}
@@ -124,7 +124,7 @@ export default function SavedLessonsPage() {
           )}
         </div>
 
-        {savedLessons.length === 0 ? (
+        {!hasSavedLessons ? (
           <div className="overflow-hidden rounded-3xl border border-line bg-card shadow-card">
             <div className="relative flex flex-col items-center px-6 py-14 text-center sm:py-20">
               <div
@@ -210,7 +210,7 @@ export default function SavedLessonsPage() {
                       </span>
                       <button
                         type="button"
-                        onClick={() => toggleSavedLesson(lesson.id)}
+                        onClick={() => toggleSavedLesson(course.id, lesson.id)}
                         aria-label={`Remove ${lesson.title} from saved lessons`}
                         className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-xs font-semibold text-muted transition hover:bg-rose-50 hover:text-rose-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand dark:hover:bg-rose-950/30"
                       >

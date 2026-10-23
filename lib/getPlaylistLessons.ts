@@ -26,8 +26,6 @@ export async function getPlaylistLessons({
             pageToken: nextPageToken,
         });
 
-        console.log(res)
-
         if (res.data.items) {
             items.push(...res.data.items);
         }
@@ -112,6 +110,7 @@ export async function getPlaylistLessons({
                 title: cleanTitle,
                 slug,
                 description: trimmedDescription.slice(0, 500),
+                isSaved:false,
                 videoProvider: "youtube",
                 videoUrl: `https://www.youtube.com/watch?v=${videoId}&list=${playlistId}&index=${order}`,
                 thumbnail:

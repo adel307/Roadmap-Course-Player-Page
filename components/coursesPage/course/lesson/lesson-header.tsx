@@ -11,9 +11,9 @@ type Props = {
 };
 
 export function LessonHeader({ course, lesson }: Props) {
-  const savedLessonIds = useCourseStore((state) => state.savedLessonIds);
+  const savedLessonsIds = useCourseStore((state) => state.savedLessonsIds);
   const toggleSavedLesson = useCourseStore((state) => state.toggleSavedLesson);
-  const isSaved = savedLessonIds.includes(lesson.id);
+  const isSaved = savedLessonsIds.includes(lesson.id);
 
   return (
     <header className="border-b border-line bg-white">
@@ -80,7 +80,7 @@ export function LessonHeader({ course, lesson }: Props) {
           <button
             type="button"
             aria-pressed={isSaved}
-            onClick={() => toggleSavedLesson(lesson.id)}
+            onClick={() => toggleSavedLesson(course.id, lesson.id)}
             className={`inline-flex shrink-0 items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 ${
               isSaved
                 ? "border-brand/30 bg-brand-pale text-brand-dark"

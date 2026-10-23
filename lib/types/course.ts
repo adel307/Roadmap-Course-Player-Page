@@ -20,7 +20,7 @@ export interface Course {
 
     // Advanced Attributes
     discount_price?: number | null;
-    promo_video_url?: string | null;
+    promo_video_url: string;
     level: CourseLevel;
 
     // Cached Stats

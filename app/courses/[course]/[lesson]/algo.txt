@@ -1,0 +1,107 @@
+inputs:
+    1. LessonID
+    2. CourseID
+Algo:
+    if (CourseID is UUID):
+        if (LessonID )
+        get lesson from store : using lessonsByCourse(CourseID, LessonID) 
+        if (lesson): return lesson
+        else:
+            get courses from store using courses
+            if (courses):
+                get course from courses getCourseById(CourseID)
+                if (course):
+                    get courseLessons using fetchLessonsForCourse(courseId)
+                    if (Lessons):
+                        add Lessons to store
+                        get lesson from lessons using LessonID
+                        if (lesson):
+                            return lesson
+                        else:
+                            return ("inValid lesson ID")
+                    else:
+                        return ("Error happened When fetching Lessons")
+                else:
+                    get courses from server
+                    add courses to store
+                    get course from courses getCourseById(CourseID)
+                    if (course):
+                        get courseLessons using fetchLessonsForCourse(courseId)
+                        if (Lessons):
+                            add Lessons to store
+                            get lesson from lessons using LessonID
+                            if (lesson):
+                                return lesson
+                            else:
+                                return ("inValid lesson ID")
+                        else:
+                            return ("Error happened When fetching Lessons")
+                    else:
+                        return ("inValid course ID")
+            else:
+                get courses from server
+                add courses to store
+                get course from courses getCourseById(CourseID)
+                if (course):
+                    get courseLessons using fetchLessonsForCourse(courseId)
+                    if (Lessons):
+                        add Lessons to store
+                        get lesson from lessons using LessonID
+                        if (lesson):
+                            return lesson
+                        else:
+                            return ("inValid lesson ID")
+                    else:
+                        return ("Error happened When fetching Lessons")
+                else:
+                    return ("inValid course ID")
+    else:
+        return ("inValid course ID")
+
+
+Algo:
+    if (CourseID is not UUID): return "inValid course ID"
+
+    // 1. Get course (store -> server fallback)
+    course = getCourse(CourseID)
+    if (!course): return "inValid course ID"
+
+    // 2. Ensure lessons are loaded (store -> server fallback)
+    lessons = getLessons(CourseID)
+    if (!lessons): return "Error happened When fetching Lessons"
+
+    // 3. Find lesson
+    lesson = lessons.find(l => l.LessonID === LessonID)
+    if (!lesson): return "inValid lesson ID"
+
+    return lesson
+
+getCourse(CourseID):
+    // try store first
+    courses = store.getCourses()
+    if (courses):
+        course = courses.getCourseById(CourseID)
+        if (course): return course
+
+    // fallback to server
+    courses = ServerCourses
+    store.addCourses(courses)
+    return courses?.getCourseById(CourseID)   // ممكن null
+
+getLessons(Course.id):
+    // try store first
+    lessons = store.LessonsByCourse(Course.id)   // lessonsByCourse
+    if (lessons && lessons.length > 0): return lessons
+
+    // fallback to server
+    lessons = fetchLessonsForCourse(
+            Course.id,
+            Course.playlistUrl,
+            async (cId, pId) => {
+                const res = await fetchLessons(cId, pId);
+                return res.lessons;
+            },
+        )
+    if (!lessons): return null
+    store.addLessons(lessons)
+    return lessons
