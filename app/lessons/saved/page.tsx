@@ -19,21 +19,26 @@ import { Lesson } from "@/lib/types/lesson";
 
 export default function SavedLessonsPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const getAllLessons = useCourseStore((state) => state.getAllLessons);
-  const getCourseById = useCourseStore((state) => state.getCourseById);
+
+  const hasHydrated       = useCourseStore((state) => state.hasHydrated);
+  const lessonsByCourse   = useCourseStore((state) => state.lessonsByCourse);
+  const courses           = useCourseStore((state) => state.courses);  
   const toggleSavedLesson = useCourseStore((state) => state.toggleSavedLesson);
 
-  const allLessons = getAllLessons();
-
   const savedLessons = useMemo(() => {
-    return allLessons
-      .filter((lesson) => lesson.isSaved && lesson.isPublished && !lesson.deletedAt)
-      .map((lesson) => {
-        const course = getCourseById(lesson.coursesId);
-        return course ? { course, lesson } : null;
-      })
-      .filter(Boolean) as { course: Course; lesson: Lesson }[];
-  }, [allLessons, getCourseById]);
+  if (!hasHydrated) return [];
+
+  const coursesMap = new Map(courses.map((c) => [c.id, c]));
+
+  return Object.values(lessonsByCourse)
+    .flat()
+    .filter((lesson) => lesson.isSaved && lesson.isPublished && !lesson.deletedAt)
+    .map((lesson) => {
+      const course = coursesMap.get(lesson.courseId);
+      return course ? { course, lesson } : null;
+    })
+    .filter(Boolean) as { course: Course; lesson: Lesson }[];
+}, [lessonsByCourse, courses, hasHydrated]);
 
   const filteredLessons = useMemo(() => {
     const query = searchQuery.trim().toLocaleLowerCase();
@@ -45,6 +50,18 @@ export default function SavedLessonsPage() {
       return lessonMatch || courseMatch;
     });
   }, [savedLessons, searchQuery]);
+
+  if (!hasHydrated) {
+    return (
+      <main className="min-h-screen bg-page/55 text-ink dark:bg-page">
+        <section className="border-b border-line bg-card">
+          <div className="mx-auto max-w-7xl px-5 pb-10 pt-8 sm:px-8 sm:pb-14 sm:pt-10">
+            <div className="h-24 animate-pulse rounded-xl bg-surface" />
+          </div>
+        </section>
+      </main>
+    );
+  }
 
   const hasSavedLessons = savedLessons.length > 0;
 

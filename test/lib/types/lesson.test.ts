@@ -7,7 +7,7 @@ describe("lesson types", () => {
       id: "comment-1",
       user: "Learner",
       comment: "Helpful.",
-      coursesId: testCourse.id,
+      courseId: testCourse.id,
     };
     const lesson: Lesson = { ...testLesson, comments: [comment] };
     const pageProps: LessonDetailContentProps = {

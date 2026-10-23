@@ -6,7 +6,7 @@ export const testCourse: Course = courses[0];
 
 export const testLesson: Lesson = {
   id: "lesson-test",
-  coursesId: testCourse.id,
+  courseId: testCourse.id,
   title: "Testing fundamentals",
   slug: "testing-fundamentals",
   description: "A lesson used by the component tests.",

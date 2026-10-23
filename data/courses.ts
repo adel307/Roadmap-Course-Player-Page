@@ -140,7 +140,7 @@ export const courses: Course[] = [
         status: "published",
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-        promo_video_url: "https://www.youtube.com/watch?v=x60gG9zi0bI&list=PLQtNtS-WfRa8OF9juY3k6WUWayMfDKHK2",
+        promo_video_url: "https://www.youtube.com/watch?v=Bzzp0q0T5oM&list=PLQtNtS-WfRa8OF9juY3k6WUWayMfDKHK2",
         level: "all_levels",
         average_rating: 4.7,
         total_reviews: 215,

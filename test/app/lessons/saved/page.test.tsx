@@ -12,6 +12,7 @@ const mockUseCourseStore = useCourseStore as unknown as jest.Mock;
 function setStore(lessons: typeof testLesson[]) {
   mockUseCourseStore.mockImplementation((selector) =>
     selector({
+      hasHydrated: true,
       getAllLessons: () => lessons,
       getCourseById: (courseId: string) =>
         courseId === testCourse.id ? testCourse : undefined,

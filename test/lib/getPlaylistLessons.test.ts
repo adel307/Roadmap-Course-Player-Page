@@ -73,7 +73,7 @@ describe("getPlaylistLessons", () => {
     expect(lessons[0]).toEqual(
       expect.objectContaining({
         id: "video-1",
-        coursesId: "course-1",
+        courseId: "course-1",
         title: "Welcome to TypeScript",
         slug: "welcome-to-typescript",
         description: "First line",
@@ -86,7 +86,7 @@ describe("getPlaylistLessons", () => {
             id: "comment-1",
             user: "Learner",
             comment: "Great lesson",
-            coursesId: "course-1",
+            courseId: "course-1",
           },
         ],
       }),

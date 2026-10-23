@@ -13,12 +13,12 @@ export interface Comments{
     id: string;
     user:string;
     comment: string;
-    coursesId: string;
+    courseId: string;
 }
 
 export interface Lesson {
     id: string;
-    coursesId: string;
+    courseId: string;
     title: string;
     slug: string | null;
     description: string ;

@@ -87,7 +87,7 @@ const otherLevelCourse: Course = {
 const lessons: Lesson[] = [
   {
     id: "lesson-9",
-    coursesId: course.id,
+    courseId: course.id,
     title: "Previous lesson",
     slug: "previous-lesson",
     description: "",
@@ -107,7 +107,7 @@ const lessons: Lesson[] = [
   },
   {
     id: "lesson-10",
-    coursesId: course.id,
+    courseId: course.id,
     title: "Current lesson",
     slug: "current-lesson",
     description: "",
@@ -127,7 +127,7 @@ const lessons: Lesson[] = [
   },
   {
     id: "lesson-11",
-    coursesId: course.id,
+    courseId: course.id,
     title: "Next lesson",
     slug: "next-lesson",
     description: "",

@@ -27,7 +27,7 @@ export function CommentForm({ course, lesson }: Props) {
                 id: Date.now().toString(),
                 user: "Current User",
                 comment: newCommentText.trim(),
-                coursesId: course.id,
+                courseId: course.id,
             };
 
             const currentComments = lesson.comments || [];

@@ -26,7 +26,7 @@ describe("LessonComments", () => {
             id: "comment-1",
             user: "A Learner",
             comment: "Useful explanation",
-            coursesId: testCourse.id,
+            courseId: testCourse.id,
           },
         ]}
       />,

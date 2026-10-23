@@ -95,7 +95,7 @@ export async function getPlaylistLessons({
                                 id: thread.id ?? `${videoId}-comment`,
                                 user:commentSnippet?.authorDisplayName ?? "Anonymous",
                                 comment: commentSnippet?.textDisplay ?? "",
-                                coursesId: courseId,
+                                courseId: courseId,
                             };
                         });
                     }
@@ -106,7 +106,7 @@ export async function getPlaylistLessons({
 
             return {
                 id: videoId || `${playlistId}-${order}`,
-                coursesId: courseId,
+                courseId: courseId,
                 title: cleanTitle,
                 slug,
                 description: trimmedDescription.slice(0, 500),

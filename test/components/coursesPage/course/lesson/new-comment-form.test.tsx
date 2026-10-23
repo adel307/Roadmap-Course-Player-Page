@@ -27,7 +27,7 @@ describe("CommentForm", () => {
           expect.objectContaining({
             user: "Current User",
             comment: "Helpful lesson!",
-            coursesId: testCourse.id,
+            courseId: testCourse.id,
           }),
         ],
       }),
