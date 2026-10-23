@@ -9,14 +9,16 @@ jest.mock("@/lib/store/useCourseStore", () => ({
 
 const mockUseCourseStore = useCourseStore as unknown as jest.Mock;
 
-function setStore(lessons: typeof testLesson[]) {
+function setStore(
+  lessons: (typeof testLesson)[],
+  toggleSavedLesson = jest.fn(),
+) {
   mockUseCourseStore.mockImplementation((selector) =>
     selector({
       hasHydrated: true,
-      getAllLessons: () => lessons,
-      getCourseById: (courseId: string) =>
-        courseId === testCourse.id ? testCourse : undefined,
-      toggleSavedLesson: jest.fn(),
+      courses: [testCourse],
+      lessonsByCourse: { [testCourse.id]: lessons },
+      toggleSavedLesson,
     }),
   );
 }
@@ -32,9 +34,23 @@ describe("SavedLessonsPage", () => {
     setStore([{ ...testLesson, isSaved: true }]);
     render(<SavedLessonsPage />);
 
-    fireEvent.change(screen.getByRole("searchbox", { name: "Search saved lessons" }), {
-      target: { value: "no match" },
-    });
+    fireEvent.change(
+      screen.getByRole("searchbox", { name: "Search saved lessons" }),
+      { target: { value: "no match" } },
+    );
     expect(screen.getByText("No matching lessons")).toBeInTheDocument();
+  });
+
+  it("calls toggleSavedLesson when Remove is clicked", () => {
+    const toggle = jest.fn();
+    setStore([{ ...testLesson, isSaved: true }], toggle);
+    render(<SavedLessonsPage />);
+
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: `Remove ${testLesson.title} from saved lessons`,
+      }),
+    );
+    expect(toggle).toHaveBeenCalledWith(testCourse.id, testLesson.id);
   });
 });
